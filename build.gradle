@@ -1,0 +1,77 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+group = 'dev.rachamon'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    archivesBaseName = 'RachamonPixelmonBooster'
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+}
+
+minecraft {
+    mappings channel: 'stable', version: '39-1.12'
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'sponge-repo'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
+    ivy {
+        name = 'Pixelmon Reforged'
+        url "https://download.nodecdn.net/containers/reforged/server/release"
+        metadataSources {
+            artifact()
+        }
+        patternLayout {
+            artifact "[revision]/[artifact].[ext]"
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:' + forgeVersion
+    compileOnly 'org.spongepowered:spongeapi:' + spongeVersion
+    compileOnly 'pixelmon:Pixelmon-1.12.2-' + pixelmonVersion + '-server:' + pixelmonVersion
+    shadow 'com.github.king-glitch:sponge-plugin-api:204bbb9a21'
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    classifier ''
+}
+
+reobf {
+    shadowJar {
+
+    }
+}
+processResources {
+    filesMatching("mcmod.info") {
+        expand(
+                'version': project.modVersion,
+                'mcversion': project.mcVersion
+        )
+    }
+}

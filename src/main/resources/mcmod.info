@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "RachamonPixelmonBooster",
+    "name": "RachamonPixelmonBooster",
+    "description": "Simple Pixelmon Booster",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Rachamon"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
