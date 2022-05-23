@@ -1,10 +1,16 @@
 package dev.rachamon.rachamonpixelmonbooster;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import dev.rachamon.api.sponge.command.SpongeCommandService;
+import dev.rachamon.api.sponge.config.SpongeAPIConfigFactory;
 import dev.rachamon.api.sponge.implement.plugin.IRachamonPlugin;
 import dev.rachamon.api.sponge.implement.plugin.IRachamonPluginManager;
 import dev.rachamon.api.sponge.provider.RachamonSpongePluginProvider;
+import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
+import dev.rachamon.rachamonpixelmonbooster.configs.LanguageConfig;
+import dev.rachamon.rachamonpixelmonbooster.configs.MainConfig;
+import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterPluginManager;
 import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.spongepowered.api.Game;
@@ -27,7 +33,6 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
 
     public static final String PLUGIN_NAME = "RachamonPixelmonBooster";
     private static RachamonPixelmonBooster instance;
-
     @Inject
     private Game game;
     @Inject
@@ -37,9 +42,15 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
     @Inject
     @ConfigDir(sharedRoot = false)
     private Path directory;
+    @Inject
+    private Injector injector;
 
     private boolean isInitialized = false;
+    private Components components;
     private RachamonPixelmonBoosterPluginManager pluginManager;
+    private SpongeAPIConfigFactory<RachamonPixelmonBooster, MainConfig> config;
+    private SpongeAPIConfigFactory<RachamonPixelmonBooster, LanguageConfig> language;
+    private SpongeAPIConfigFactory<RachamonPixelmonBooster, BoosterConfig> booster;
 
     public RachamonPixelmonBooster() {
         super(RachamonPixelmonBooster.PLUGIN_NAME, Sponge.getServer());
@@ -114,5 +125,67 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
 
     public static RachamonPixelmonBooster getInstance() {
         return instance;
+    }
+
+    public MainConfig getConfig() {
+        return this.config.getRoot();
+    }
+
+    public void setConfig(MainConfig config) {
+        this.config.setClazz(config);
+    }
+
+    public void setMainConfig(SpongeAPIConfigFactory<RachamonPixelmonBooster, MainConfig> config) {
+        this.config = config;
+    }
+
+    public BoosterConfig getBooster() {
+        return this.booster.getRoot();
+    }
+
+    public void setBooster(BoosterConfig config) {
+        this.booster.setClazz(config);
+    }
+
+    public void setMainBooster(SpongeAPIConfigFactory<RachamonPixelmonBooster, BoosterConfig> booster) {
+        this.booster = booster;
+    }
+
+    public LanguageConfig getLanguage() {
+        return this.language.getRoot();
+    }
+
+    public void setLanguage(LanguageConfig config) {
+        this.language.setClazz(config);
+    }
+
+    public void setMainLanguage(SpongeAPIConfigFactory<RachamonPixelmonBooster, LanguageConfig> language) {
+        this.language = language;
+    }
+
+    public Components getComponents() {
+        return this.components;
+    }
+
+    public void setComponents(Components components) {
+        this.components = components;
+    }
+
+    public Injector getInjector() {
+        return injector;
+    }
+
+    public void setInjector(Injector injector) {
+        this.injector = injector;
+    }
+
+    public RachamonPixelmonBoosterManager getBoosterManager() {
+        return this.getComponents().boosterManager;
+    }
+
+    public static class Components {
+        @Inject
+        private RachamonPixelmonBoosterManager boosterManager;
+
     }
 }

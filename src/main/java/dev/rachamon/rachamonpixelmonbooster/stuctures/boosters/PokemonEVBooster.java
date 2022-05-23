@@ -1,5 +1,6 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
+import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -7,19 +8,17 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-public class WinningBooster extends Booster {
-    public WinningBooster() {
-        super(BoosterType.BATTLE_WINNING);
+public class PokemonEVBooster extends Booster {
+    public PokemonEVBooster() {
+        super(BoosterType.EV);
     }
 
-    public void initialize() {
-        this.setInterval(1000);
-    }
-
-    public int calculate(int amount) throws ScriptException {
+    public int calculate(int current) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
-        Object result = engine.eval("4*5");
+        Object result = engine.eval(((BoosterConfig.EvalModifierBooster) this.getConfig())
+                .getModifierEval()
+                .replaceAll("\\{current}", String.valueOf(current)));
         return Integer.parseInt(result.toString());
     }
 }
