@@ -15,14 +15,12 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.spawning.PixelmonSpawning;
 import com.pixelmonmod.pixelmon.spawning.PlayerTrackingSpawner;
-import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonHABooster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonShinyBooster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonSpawnBooster;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
@@ -68,10 +66,12 @@ public class PixelmonSpawnListener {
 
         EntityPixelmon spawn = this.getRandomPokemon(player, booster.getBlacklist(), booster.isAllowLegendary());
 
+        if (spawn == null) {
+            return;
+        }
+
         this.onSpawnHABoost(player, spawn);
         this.onSpawnShinyBoost(player, spawn);
-
-
     }
 
     public void onSpawnHABoost(EntityPlayerMP player, EntityPixelmon pokemon) {
@@ -126,9 +126,6 @@ public class PixelmonSpawnListener {
     @Nullable
     public EntityPixelmon getRandomPokemon(EntityPlayerMP player, List<String> blacklist, boolean isAllowLegendary) {
 
-        Biome playerBiome = player.getEntityWorld().getBiome(player.getPosition());
-        List<String> pokemonNames = new ArrayList<>();
-
         if (!PixelmonSpawning.coordinator.getActive()) {
             return null;
         }
@@ -166,13 +163,6 @@ public class PixelmonSpawnListener {
             return null;
         }
         return PokemonSpec.from(filtered.get(new Random().nextInt(filtered.size()))).create(player.getEntityWorld());
-    }
-
-
-    public int getRandomCoordinate(int coordinate) {
-        int radius = RachamonPixelmonBooster.getInstance().getConfig().getGeneralConfig().getSpawnRadius();
-        return coordinate + (new Random().nextInt(100) <= 49 ? new Random().nextInt(radius) : -new Random().nextInt(radius));
-
     }
 
 }
