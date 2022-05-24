@@ -19,4 +19,29 @@ public class RachamonPixelmonBoosterManager {
     public static Booster getBooster(BoosterType boosterType) {
         return RachamonPixelmonBoosterManager.getBoosters().get(boosterType);
     }
+
+    public void givePlayerBooster() {
+    }
+
+    public void removePlayerBooster() {
+    }
+
+    public void playerUseBooster() {
+    }
+
+    public void playerResumeBooster() {
+    }
+
+    public void playerPauseBooster() {
+    }
+
+    public void activateGlobalBooster() {
+    }
+
+    public void deactivateGlobalBooster() {
+    }
+
+    public void printPlayerBoosterInfo() {
+    }
+
 }
