@@ -16,8 +16,23 @@ public class RachamonPixelmonBoosterManager {
         return boosters;
     }
 
-    public static Booster getBooster(BoosterType boosterType) {
-        return RachamonPixelmonBoosterManager.getBoosters().get(boosterType);
+    public Booster getBooster(BoosterType boosterType) throws Exception {
+        Booster booster = RachamonPixelmonBoosterManager.getBoosters().get(boosterType);
+        if (booster == null) {
+            throw new Exception("booster not found");
+        }
+
+        return booster;
+    }
+
+    public BoosterType getBooster(String boost) throws Exception {
+        BoosterType boosterType = BoosterType.fromString(boost);
+
+        if (boosterType == null) {
+            throw new Exception("booster not found");
+        }
+
+        return boosterType;
     }
 
     public void givePlayerBooster() {
@@ -35,10 +50,14 @@ public class RachamonPixelmonBoosterManager {
     public void playerPauseBooster() {
     }
 
-    public void activateGlobalBooster() {
+    public void activateGlobalBooster(String boost) throws Exception {
+        Booster booster = this.getBooster(this.getBooster(boost));
+        booster.setGloballyActive(true);
     }
 
-    public void deactivateGlobalBooster() {
+    public void deactivateGlobalBooster(String boost) throws Exception {
+        Booster booster = this.getBooster(this.getBooster(boost));
+        booster.setGloballyActive(false);
     }
 
     public void printPlayerBoosterInfo() {
