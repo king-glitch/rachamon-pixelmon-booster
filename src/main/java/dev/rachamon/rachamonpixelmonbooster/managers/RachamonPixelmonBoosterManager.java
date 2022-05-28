@@ -102,6 +102,10 @@ public class RachamonPixelmonBoosterManager {
 
     public void playerResumeBooster(Player player, String booster) throws Exception {
         BoosterType boosterType = this.getBooster(booster);
+        this.playerResumeBooster(player, boosterType);
+    }
+
+    public void playerResumeBooster(Player player, BoosterType boosterType) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.plugin.getPlayerDataService().getPlayerData(player.getUniqueId());
         PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
 
@@ -138,10 +142,16 @@ public class RachamonPixelmonBoosterManager {
                 .getPlayerDataService()
                 .getPlayerBoostData(player.getUniqueId(), boosterType.toString())
                 .getTimeLeft());
+
+        RachamonPixelmonBoosterManager.getBoosters().get(boosterType).runTask();
     }
 
     public void playerPauseBooster(Player player, String booster) throws Exception {
         BoosterType boosterType = this.getBooster(booster);
+        this.playerPauseBooster(player, boosterType);
+    }
+
+    public void playerPauseBooster(Player player, BoosterType boosterType) {
         List<PlayerTime> playerTimeList = RachamonPixelmonBoosterManager.getBoosters().get(boosterType).getPlayers();
 
         PlayerTime playerTime = playerTimeList
