@@ -10,6 +10,7 @@ import dev.rachamon.rachamonpixelmonbooster.commands.RachamonPixelmonBoosterMain
 import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.LanguageConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.MainConfig;
+import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.listeners.*;
 import org.spongepowered.api.Sponge;
 
@@ -68,10 +69,12 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
         SpongeAPIConfigFactory<RachamonPixelmonBooster, MainConfig> config = new SpongeAPIConfigFactory<>(this.plugin, "main.conf");
         SpongeAPIConfigFactory<RachamonPixelmonBooster, LanguageConfig> language = new SpongeAPIConfigFactory<>(this.plugin, "language.conf");
         SpongeAPIConfigFactory<RachamonPixelmonBooster, BoosterConfig> boosters = new SpongeAPIConfigFactory<>(this.plugin, "boosters.conf");
+        SpongeAPIConfigFactory<RachamonPixelmonBooster, PlayerDataConfig> playerData = new SpongeAPIConfigFactory<>(this.plugin, "player-data.conf");
 
         this.plugin.setMainConfig(config);
         this.plugin.setMainLanguage(language);
         this.plugin.setMainBooster(boosters);
+        this.plugin.setMainPlayerData(playerData);
 
         this.plugin.setConfig(config
                 .setHeader("Main Config")
@@ -89,6 +92,12 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
                 .setHeader("Boosters Config")
                 .setClazz(new BoosterConfig())
                 .setClazzType(BoosterConfig.class)
+                .build());
+
+        this.plugin.setPlayerData(playerData
+                .setHeader("Player Data Config")
+                .setClazz(new PlayerDataConfig())
+                .setClazzType(PlayerDataConfig.class)
                 .build());
 
         try {

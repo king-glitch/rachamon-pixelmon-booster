@@ -55,7 +55,8 @@ public abstract class Booster {
     private void processTask() {
         this.getPlayers().removeIf(playerTime -> {
             if (playerTime.getTime() > 0) {
-                playerTime.setTime(playerTime.getTime() - this.interval);
+                int timeLeft = playerTime.getTime() - this.interval;
+                playerTime.setTime(Math.max(timeLeft, 0));
                 return false;
             }
 

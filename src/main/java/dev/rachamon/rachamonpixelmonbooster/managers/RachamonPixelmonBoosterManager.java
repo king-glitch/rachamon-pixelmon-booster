@@ -1,16 +1,20 @@
 package dev.rachamon.rachamonpixelmonbooster.managers;
 
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
+import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
+import dev.rachamon.rachamonpixelmonbooster.stuctures.PlayerTime;
+import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RachamonPixelmonBoosterManager {
 
     public static Map<BoosterType, Booster> boosters = new HashMap<BoosterType, Booster>();
-    private static final RachamonPixelmonBooster plugin = RachamonPixelmonBooster.getInstance();
+    private final RachamonPixelmonBooster plugin = RachamonPixelmonBooster.getInstance();
 
     public static Map<BoosterType, Booster> getBoosters() {
         return boosters;
@@ -35,19 +39,121 @@ public class RachamonPixelmonBoosterManager {
         return boosterType;
     }
 
-    public void givePlayerBooster() {
+    public void addPlayerBooster(Player player, String booster, int amount) throws Exception {
+
+        if (amount <= 0) {
+            return;
+        }
+
+        BoosterType boosterType = this.getBooster(booster);
+        this.plugin.getPlayerDataService().updatePlayerBoostAmountData(player.getUniqueId(), boosterType, amount);
     }
 
-    public void removePlayerBooster() {
+    public void removePlayerBooster(Player player, String booster, int amount) throws Exception {
+        if (amount <= 0) {
+            return;
+        }
+
+        BoosterType boosterType = this.getBooster(booster);
+        this.plugin.getPlayerDataService().updatePlayerBoostAmountData(player.getUniqueId(), boosterType, -amount);
     }
 
-    public void playerUseBooster() {
+    public void setAmountPlayerBooster(Player player, String booster, int amount) throws Exception {
+        if (amount < 0) {
+            return;
+        }
+
+        BoosterType boosterType = this.getBooster(booster);
+        this.plugin.getPlayerDataService().setPlayerBoostAmountData(player.getUniqueId(), boosterType, amount);
     }
 
-    public void playerResumeBooster() {
+    public void setTimePlayerBooster(Player player, String booster, int amount) throws Exception {
+        if (amount < 0) {
+            return;
+        }
+
+        BoosterType boosterType = this.getBooster(booster);
+        this.plugin.getPlayerDataService().setPlayerBoostTimeData(player.getUniqueId(), boosterType, amount);
     }
 
-    public void playerPauseBooster() {
+
+    public void playerUseBooster(Player player, String booster) throws Exception {
+        BoosterType boosterType = this.getBooster(booster);
+        PlayerDataConfig.PlayerData playerData = this.plugin.getPlayerDataService().getPlayerData(player.getUniqueId());
+        PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
+
+        if (playerBoostData.getAmount() < 1) {
+            return;
+        }
+
+        this.plugin.getPlayerDataService().updatePlayerBoostAmountData(player.getUniqueId(), boosterType, -1);
+
+        this.plugin
+                .getPlayerDataService()
+                .updatePlayerBoostTimeData(player.getUniqueId(), boosterType, playerBoostData.getTimeLeft() + RachamonPixelmonBooster
+                        .getInstance()
+                        .getBooster()
+                        .getBoosters()
+                        .get(boosterType.toString())
+                        .getDuration());
+        this.addPlayerToTaskList(player, boosterType);
+    }
+
+    public void playerResumeBooster(Player player, String booster) throws Exception {
+        BoosterType boosterType = this.getBooster(booster);
+        PlayerDataConfig.PlayerData playerData = this.plugin.getPlayerDataService().getPlayerData(player.getUniqueId());
+        PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
+
+        if (playerBoostData.getTimeLeft() < 1) {
+            return;
+        }
+
+        this.addPlayerToTaskList(player, boosterType);
+    }
+
+    private void addPlayerToTaskList(Player player, BoosterType boosterType) throws Exception {
+        List<PlayerTime> playerTimeList = RachamonPixelmonBoosterManager.getBoosters().get(boosterType).getPlayers();
+
+        PlayerTime playerTime = playerTimeList
+                .stream()
+                .filter(pt -> pt.getUuid().equals(player.getUniqueId()))
+                .findFirst()
+                .orElse(null);
+
+        if (playerTime == null) {
+            RachamonPixelmonBoosterManager
+                    .getBoosters()
+                    .get(boosterType)
+                    .getPlayers()
+                    .add(new PlayerTime(player.getUniqueId(), RachamonPixelmonBooster
+                            .getInstance()
+                            .getPlayerDataService()
+                            .getPlayerBoostData(player.getUniqueId(), boosterType.toString())
+                            .getTimeLeft()));
+            return;
+        }
+
+        playerTime.setTime(this.plugin
+                .getPlayerDataService()
+                .getPlayerBoostData(player.getUniqueId(), boosterType.toString())
+                .getTimeLeft());
+    }
+
+    public void playerPauseBooster(Player player, String booster) throws Exception {
+        BoosterType boosterType = this.getBooster(booster);
+        List<PlayerTime> playerTimeList = RachamonPixelmonBoosterManager.getBoosters().get(boosterType).getPlayers();
+
+        PlayerTime playerTime = playerTimeList
+                .stream()
+                .filter(pt -> pt.getUuid() == player.getUniqueId())
+                .findFirst()
+                .orElse(null);
+
+        if (playerTime == null) {
+            return;
+        }
+
+        playerTimeList.removeIf(pt -> pt.getUuid().equals(player.getUniqueId()));
     }
 
     public void activateGlobalBooster(String boost) throws Exception {

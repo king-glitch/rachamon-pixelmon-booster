@@ -6,9 +6,9 @@ import dev.rachamon.rachamonpixelmonbooster.commands.elements.BoosterBoostComman
 import dev.rachamon.rachamonpixelmonbooster.commands.elements.BoosterCommandElement;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import javax.annotation.Nonnull;
@@ -17,10 +17,10 @@ import java.util.Optional;
 @ICommandDescription("Use, Resume, Pause a boost")
 @ICommandAliases({"boost"})
 @ICommandPermission("rachamonpixelmonbooster.command.user.boost")
-public class RachamonPixelmonBoosterBoost implements ICommand, IParameterizedCommand {
+public class RachamonPixelmonBoosterBoost implements IPlayerCommand, IParameterizedCommand {
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource source, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
 
         Optional<String> boost = args.getOne("boost");
         Optional<String> action = args.getOne("action");
@@ -29,12 +29,16 @@ public class RachamonPixelmonBoosterBoost implements ICommand, IParameterizedCom
             return CommandResult.empty();
         }
 
-        if (action.get().equalsIgnoreCase("use")) {
-            RachamonPixelmonBooster.getInstance().getBoosterManager().playerUseBooster();
-        } else if (action.get().equalsIgnoreCase("resume")) {
-            RachamonPixelmonBooster.getInstance().getBoosterManager().playerResumeBooster();
-        } else if (action.get().equalsIgnoreCase("pause")) {
-            RachamonPixelmonBooster.getInstance().getBoosterManager().playerPauseBooster();
+        try {
+            if (action.get().equalsIgnoreCase("use")) {
+                RachamonPixelmonBooster.getInstance().getBoosterManager().playerUseBooster(source, boost.get());
+            } else if (action.get().equalsIgnoreCase("resume")) {
+                RachamonPixelmonBooster.getInstance().getBoosterManager().playerResumeBooster(source, boost.get());
+            } else if (action.get().equalsIgnoreCase("pause")) {
+                RachamonPixelmonBooster.getInstance().getBoosterManager().playerPauseBooster(source, boost.get());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return CommandResult.success();

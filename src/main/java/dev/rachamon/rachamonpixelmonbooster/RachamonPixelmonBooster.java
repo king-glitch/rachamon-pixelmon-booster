@@ -10,8 +10,10 @@ import dev.rachamon.api.sponge.provider.RachamonSpongePluginProvider;
 import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.LanguageConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.MainConfig;
+import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterPluginManager;
+import dev.rachamon.rachamonpixelmonbooster.services.PlayerDataService;
 import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
@@ -51,6 +53,7 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
     private SpongeAPIConfigFactory<RachamonPixelmonBooster, MainConfig> config;
     private SpongeAPIConfigFactory<RachamonPixelmonBooster, LanguageConfig> language;
     private SpongeAPIConfigFactory<RachamonPixelmonBooster, BoosterConfig> booster;
+    private SpongeAPIConfigFactory<RachamonPixelmonBooster, PlayerDataConfig> playerData;
 
     public RachamonPixelmonBooster() {
         super(RachamonPixelmonBooster.PLUGIN_NAME, Sponge.getServer());
@@ -163,6 +166,18 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
         this.language = language;
     }
 
+    public PlayerDataConfig getPlayerData() {
+        return this.playerData.getRoot();
+    }
+
+    public void setPlayerData(PlayerDataConfig playerData) {
+        this.playerData.setClazz(playerData);
+    }
+
+    public void setMainPlayerData(SpongeAPIConfigFactory<RachamonPixelmonBooster, PlayerDataConfig> playerData) {
+        this.playerData = playerData;
+    }
+
     public Components getComponents() {
         return this.components;
     }
@@ -183,9 +198,16 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
         return this.getComponents().boosterManager;
     }
 
+    public PlayerDataService getPlayerDataService() {
+        return this.getComponents().playerDataService;
+    }
+
     public static class Components {
         @Inject
         private RachamonPixelmonBoosterManager boosterManager;
+
+        @Inject
+        private PlayerDataService playerDataService;
 
     }
 }

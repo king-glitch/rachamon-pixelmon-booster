@@ -28,8 +28,10 @@ public class BoosterModificationCommandElement extends CommandElement {
     @Override
     public List<String> complete(@Nonnull CommandSource src, @Nonnull CommandArgs args, @Nonnull CommandContext context) {
         List<String> keys = new ArrayList<String>() {{
-            add("give");
+            add("add");
             add("remove");
+            add("set");
+            add("time");
         }};
 
         try {
