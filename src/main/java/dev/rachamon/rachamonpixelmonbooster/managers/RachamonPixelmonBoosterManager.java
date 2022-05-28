@@ -1,15 +1,16 @@
 package dev.rachamon.rachamonpixelmonbooster.managers;
 
+import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.PlayerTime;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.service.pagination.PaginationList;
+import org.spongepowered.api.text.Text;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RachamonPixelmonBoosterManager {
 
@@ -145,7 +146,7 @@ public class RachamonPixelmonBoosterManager {
 
         PlayerTime playerTime = playerTimeList
                 .stream()
-                .filter(pt -> pt.getUuid() == player.getUniqueId())
+                .filter(pt -> pt.getUuid().equals(player.getUniqueId()))
                 .findFirst()
                 .orElse(null);
 
@@ -166,7 +167,38 @@ public class RachamonPixelmonBoosterManager {
         booster.setGloballyActive(false);
     }
 
-    public void printPlayerBoosterInfo() {
+    public void printPlayerBoosterInfo(Player player) throws Exception {
+        PlayerDataConfig.PlayerData playerData = this.plugin.getPlayerDataService().getPlayerData(player.getUniqueId());
+
+        PaginationList.Builder builder = PaginationList
+                .builder()
+                .title(TextUtil.toText("&6&lGuilds"))
+                .padding(TextUtil.toText("&8="));
+
+        List<Text> contents = new ArrayList<>();
+        int i = 1;
+        for (BoosterType boosterType : playerData.getBooster().keySet()) {
+            PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
+            String text = i + ". " + boosterType.toString() + " time-left: " + playerBoostData.getTimeLeft() + ", amount: " + playerBoostData.getAmount() + ", activated: " + this.isPlayerBoostActivated(player.getUniqueId(), boosterType);
+            contents.add(TextUtil.toText(text));
+            i++;
+        }
+
+        builder.contents(contents).sendTo(player);
+
+
+    }
+
+    public boolean isPlayerBoostActivated(UUID uuid, BoosterType boosterType) {
+        List<PlayerTime> playerTimeList = RachamonPixelmonBoosterManager.getBoosters().get(boosterType).getPlayers();
+
+        PlayerTime playerTime = playerTimeList
+                .stream()
+                .filter(pt -> pt.getUuid().equals(uuid))
+                .findFirst()
+                .orElse(null);
+
+        return playerTime != null;
     }
 
 }
