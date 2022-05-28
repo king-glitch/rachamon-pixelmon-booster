@@ -168,8 +168,10 @@ public class RachamonPixelmonBoosterManager {
     }
 
     public void activateGlobalBooster(String boost) throws Exception {
-        Booster booster = this.getBooster(this.getBooster(boost));
+        BoosterType boosterType = this.getBooster(boost);
+        Booster booster = this.getBooster(boosterType);
         booster.setGloballyActive(true);
+        RachamonPixelmonBoosterManager.getBoosters().get(boosterType).runTask();
     }
 
     public void deactivateGlobalBooster(String boost) throws Exception {
