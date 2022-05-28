@@ -14,6 +14,9 @@ import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.listeners.*;
 import org.spongepowered.api.Sponge;
 
+/**
+ * The type Rachamon pixelmon booster plugin manager.
+ */
 public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginManager {
     private final RachamonPixelmonBooster plugin = RachamonPixelmonBooster.getInstance();
 

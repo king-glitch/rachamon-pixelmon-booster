@@ -10,7 +10,15 @@ import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonEVBooster;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.spongepowered.api.entity.living.player.Player;
 
+/**
+ * The type Pixelmon ev listener.
+ */
 public class PixelmonEVListener {
+    /**
+     * On pokemon ev gained.
+     *
+     * @param event the event
+     */
     @SubscribeEvent
     public void onPokemonEVGained(EVsGainedEvent event) {
 

@@ -7,8 +7,16 @@ import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonExpBooster
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.spongepowered.api.entity.living.player.Player;
 
+/**
+ * The type Pixelmon exp listener.
+ */
 public class PixelmonExpListener {
 
+    /**
+     * On pokemon exp gain.
+     *
+     * @param event the event
+     */
     @SubscribeEvent
     public void onPokemonExpGain(ExperienceGainEvent event) {
 

@@ -15,6 +15,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Rachamon pixelmon booster global.
+ */
 @ICommandDescription("Activate, Deactivate boosts")
 @ICommandAliases({"global"})
 @ICommandPermission("rachamonpixelmonbooster.command.admin.global")

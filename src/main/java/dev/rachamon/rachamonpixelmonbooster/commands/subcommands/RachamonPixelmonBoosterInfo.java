@@ -10,6 +10,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Rachamon pixelmon booster info.
+ */
 @ICommandDescription("Get current user info")
 @ICommandAliases({"info"})
 @ICommandPermission("rachamonpixelmonbooster.command.user.info")

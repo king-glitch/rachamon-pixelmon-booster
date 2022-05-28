@@ -10,6 +10,9 @@ import org.spongepowered.api.command.args.CommandElement;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Rachamon pixelmon booster reload.
+ */
 @ICommandDescription("Reload all configs")
 @ICommandAliases({"reload"})
 @ICommandPermission("rachamonpixelmonbooster.command.admin.reload")

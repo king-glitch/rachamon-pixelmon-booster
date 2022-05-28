@@ -7,7 +7,15 @@ import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonCaptureBoo
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.spongepowered.api.entity.living.player.Player;
 
+/**
+ * The type Pokemon capture listener.
+ */
 public class PokemonCaptureListener {
+    /**
+     * On start capture.
+     *
+     * @param event the event
+     */
     @SubscribeEvent
     public void onStartCapture(CaptureEvent.StartCapture event) {
         Player player = (Player) event.player;

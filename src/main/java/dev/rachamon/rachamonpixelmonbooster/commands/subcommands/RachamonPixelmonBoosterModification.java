@@ -17,6 +17,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Rachamon pixelmon booster modification.
+ */
 @ICommandDescription("Modification about the boost.")
 @ICommandAliases({"modification", "mod", "config"})
 @ICommandPermission("rachamonpixelmonbooster.command.admin.modification")

@@ -11,8 +11,16 @@ import org.spongepowered.api.event.network.ClientConnectionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Player action listener.
+ */
 public class PlayerActionListener {
 
+    /**
+     * On player join.
+     *
+     * @param event the event
+     */
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event) {
         Player player = (Player) event.getSource();
@@ -45,6 +53,11 @@ public class PlayerActionListener {
         player.sendMessage(TextUtil.toText("&To pause use: /boost boost <boost> pause"));
     }
 
+    /**
+     * On player leave.
+     *
+     * @param event the event
+     */
     @Listener
     public void onPlayerLeave(ClientConnectionEvent.Disconnect event) {
         Player player = (Player) event.getSource();

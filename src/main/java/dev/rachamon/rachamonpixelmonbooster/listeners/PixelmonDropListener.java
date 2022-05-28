@@ -16,7 +16,15 @@ import org.spongepowered.api.entity.living.player.Player;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The type Pixelmon drop listener.
+ */
 public class PixelmonDropListener {
+    /**
+     * On pixelmon drop.
+     *
+     * @param event the event
+     */
     @SubscribeEvent
     public void onPixelmonDrop(DropEvent event) {
         Player player = (Player) event.player;

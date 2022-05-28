@@ -27,8 +27,16 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * The type Pixelmon spawn listener.
+ */
 public class PixelmonSpawnListener {
 
+    /**
+     * On spawn boost.
+     *
+     * @param event the event
+     */
     @SubscribeEvent
     public void onSpawnBoost(SpawnEvent event) {
 
@@ -74,6 +82,12 @@ public class PixelmonSpawnListener {
         this.onSpawnShinyBoost(player, spawn);
     }
 
+    /**
+     * On spawn ha boost.
+     *
+     * @param player  the player
+     * @param pokemon the pokemon
+     */
     public void onSpawnHABoost(EntityPlayerMP player, EntityPixelmon pokemon) {
 
         PokemonHABooster booster = (PokemonHABooster) RachamonPixelmonBoosterManager
@@ -101,6 +115,12 @@ public class PixelmonSpawnListener {
         pokemon.update(EnumUpdateType.Ability);
     }
 
+    /**
+     * On spawn shiny boost.
+     *
+     * @param player  the player
+     * @param pokemon the pokemon
+     */
     public void onSpawnShinyBoost(EntityPlayerMP player, EntityPixelmon pokemon) {
 
         PokemonShinyBooster booster = (PokemonShinyBooster) RachamonPixelmonBoosterManager
@@ -123,6 +143,14 @@ public class PixelmonSpawnListener {
         pokemon.getPokemonData().setShiny(true);
     }
 
+    /**
+     * Gets random pokemon.
+     *
+     * @param player           the player
+     * @param blacklist        the blacklist
+     * @param isAllowLegendary the is allow legendary
+     * @return the random pokemon
+     */
     @Nullable
     public EntityPixelmon getRandomPokemon(EntityPlayerMP player, List<String> blacklist, boolean isAllowLegendary) {
 

@@ -14,6 +14,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Rachamon pixelmon booster boost.
+ */
 @ICommandDescription("Use, Resume, Pause a boost")
 @ICommandAliases({"boost"})
 @ICommandPermission("rachamonpixelmonbooster.command.user.boost")

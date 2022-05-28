@@ -3,7 +3,6 @@ package dev.rachamon.rachamonpixelmonbooster.stuctures;
 import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
-import dev.rachamon.rachamonpixelmonbooster.services.PlayerDataService;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
@@ -13,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The type Booster.
+ */
 public abstract class Booster {
     private BoosterType booster = null;
     private final List<PlayerTime> players = new ArrayList<>();
@@ -23,6 +25,11 @@ public abstract class Booster {
 
     private BoosterConfig.Booster config;
 
+    /**
+     * Instantiates a new Booster.
+     *
+     * @param boosterType the booster type
+     */
     public Booster(BoosterType boosterType) {
         this.booster = boosterType;
         try {
@@ -37,14 +44,23 @@ public abstract class Booster {
         }
     }
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
 
     }
 
+    /**
+     * Run task.
+     */
     public void runTask() {
         if (this.isRunning()) {
             return;
         }
+
+        RachamonPixelmonBooster.getInstance().getLogger().debug("Starting " + this.booster + " booster task");
+
         this.setRunning(true);
         this.setBoosterTask(Task
                 .builder()
@@ -102,38 +118,83 @@ public abstract class Booster {
         this.getBoosterTask().cancel();
     }
 
+    /**
+     * Gets booster.
+     *
+     * @return the booster
+     */
     public BoosterType getBooster() {
         return this.booster;
     }
 
+    /**
+     * Gets players.
+     *
+     * @return the players
+     */
     public List<PlayerTime> getPlayers() {
         return this.players;
     }
 
+    /**
+     * Is globally active boolean.
+     *
+     * @return the boolean
+     */
     public boolean isGloballyActive() {
         return this.isGloballyActive;
     }
 
+    /**
+     * Sets globally active.
+     *
+     * @param globallyActive the globally active
+     */
     public void setGloballyActive(boolean globallyActive) {
         this.isGloballyActive = globallyActive;
     }
 
+    /**
+     * Is running boolean.
+     *
+     * @return the boolean
+     */
     public boolean isRunning() {
         return this.isRunning;
     }
 
+    /**
+     * Sets running.
+     *
+     * @param running the running
+     */
     public void setRunning(boolean running) {
         this.isRunning = running;
     }
 
+    /**
+     * Gets booster task.
+     *
+     * @return the booster task
+     */
     public Task getBoosterTask() {
         return this.boosterTask;
     }
 
+    /**
+     * Sets booster task.
+     *
+     * @param boosterTask the booster task
+     */
     public void setBoosterTask(Task boosterTask) {
         this.boosterTask = boosterTask;
     }
 
+    /**
+     * Gets config.
+     *
+     * @return the config
+     */
     public BoosterConfig.Booster getConfig() {
         return this.config;
     }

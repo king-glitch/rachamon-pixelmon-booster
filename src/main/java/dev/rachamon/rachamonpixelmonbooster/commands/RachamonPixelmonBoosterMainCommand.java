@@ -9,6 +9,9 @@ import org.spongepowered.api.command.args.CommandContext;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Rachamon pixelmon booster main command.
+ */
 @ICommandChildren({RachamonPixelmonBoosterGlobal.class, RachamonPixelmonBoosterInfo.class, RachamonPixelmonBoosterReload.class, RachamonPixelmonBoosterModification.class, RachamonPixelmonBoosterBoost.class})
 @ICommandAliases({"rachamonpixelmonbooster", "boosters", "boost", "boosts", "booster"})
 @ICommandHelpText(title = "Main Pixelmon Booster Help", command = "help")

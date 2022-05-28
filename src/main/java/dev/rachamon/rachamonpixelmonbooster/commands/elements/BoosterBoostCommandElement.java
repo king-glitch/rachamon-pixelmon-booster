@@ -13,7 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Booster boost command element.
+ */
 public class BoosterBoostCommandElement extends CommandElement {
+    /**
+     * Instantiates a new Booster boost command element.
+     *
+     * @param key the key
+     */
     public BoosterBoostCommandElement(@Nullable Text key) {
         super(key);
     }

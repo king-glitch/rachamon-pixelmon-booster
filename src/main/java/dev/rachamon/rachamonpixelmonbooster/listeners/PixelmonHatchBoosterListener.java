@@ -10,8 +10,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.UUID;
 
+/**
+ * The type Pixelmon hatch booster listener.
+ */
 public class PixelmonHatchBoosterListener {
 
+    /**
+     * On pokemon hatch.
+     *
+     * @param event the event
+     */
     @SubscribeEvent
     public void onPokemonHatch(BreedEvent.MakeEgg event) {
 

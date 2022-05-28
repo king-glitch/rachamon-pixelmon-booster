@@ -15,7 +15,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The type Booster command element.
+ */
 public class BoosterCommandElement extends CommandElement {
+    /**
+     * Instantiates a new Booster command element.
+     *
+     * @param key the key
+     */
     public BoosterCommandElement(@Nullable Text key) {
         super(key);
     }

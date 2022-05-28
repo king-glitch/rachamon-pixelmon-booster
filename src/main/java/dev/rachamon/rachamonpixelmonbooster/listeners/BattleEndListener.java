@@ -7,8 +7,16 @@ import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.TrainerMoneyBoost
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.spongepowered.api.entity.living.player.Player;
 
+/**
+ * The type Battle end listener.
+ */
 public class BattleEndListener {
 
+    /**
+     * On player beat trainer.
+     *
+     * @param event the event
+     */
     @SubscribeEvent
     public void onPlayerBeatTrainer(BeatTrainerEvent event) {
 
