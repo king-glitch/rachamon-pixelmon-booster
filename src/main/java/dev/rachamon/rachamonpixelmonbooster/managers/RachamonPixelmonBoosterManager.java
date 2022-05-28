@@ -165,6 +165,11 @@ public class RachamonPixelmonBoosterManager {
         }
 
         playerTimeList.removeIf(pt -> pt.getUuid().equals(player.getUniqueId()));
+        
+        RachamonPixelmonBooster
+                .getInstance()
+                .getPlayerDataService()
+                .setPlayerBoostTimeData(player.getUniqueId(), boosterType, playerTime.getTime());
     }
 
     public void activateGlobalBooster(String boost) throws Exception {

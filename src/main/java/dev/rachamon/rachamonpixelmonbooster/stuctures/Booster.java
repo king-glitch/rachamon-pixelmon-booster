@@ -3,6 +3,7 @@ package dev.rachamon.rachamonpixelmonbooster.stuctures;
 import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
+import dev.rachamon.rachamonpixelmonbooster.services.PlayerDataService;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
@@ -57,6 +58,10 @@ public abstract class Booster {
             if (playerTime.getTime() > 0) {
                 int timeLeft = playerTime.getTime() - this.interval;
                 playerTime.setTime(Math.max(timeLeft, 0));
+                RachamonPixelmonBooster
+                        .getInstance()
+                        .getPlayerDataService()
+                        .setPlayerBoostTimeData(playerTime.getUuid(), this.getBooster(), playerTime.getTime());
                 return false;
             }
 

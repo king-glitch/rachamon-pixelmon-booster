@@ -102,8 +102,9 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
 
         try {
             this.plugin.getLogger().setDebug(this.plugin.getConfig().getGeneralConfig().isDebug());
-        } catch (Exception ignore) {
-
+            RachamonPixelmonBooster.getInstance().getPlayerDataService().cleanUnusedPlayersData();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

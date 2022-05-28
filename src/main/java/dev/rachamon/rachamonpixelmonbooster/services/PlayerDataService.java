@@ -1,9 +1,11 @@
 package dev.rachamon.rachamonpixelmonbooster.services;
 
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
+import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerDataService {
@@ -16,7 +18,7 @@ public class PlayerDataService {
 
     public PlayerDataConfig.PlayerBoostData addPlayerBoostData(UUID uuid, BoosterType boosterType) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
-        playerData.getBooster().put(boosterType, new PlayerDataConfig.PlayerBoostData());
+        playerData.getBooster().put(boosterType, new PlayerDataConfig.PlayerBoostData(0, 0, false));
         this.save();
         return this.getPlayerBoostData(uuid, boosterType.toString());
     }
@@ -101,14 +103,42 @@ public class PlayerDataService {
         this.save();
     }
 
-    public void save() {
+    public void cleanUnusedPlayersData() {
+        Map<UUID, PlayerDataConfig.PlayerData> players = RachamonPixelmonBooster
+                .getInstance()
+                .getPlayerData()
+                .getPlayers();
 
+        for (UUID uuid : players.keySet()) {
+            PlayerDataConfig.PlayerData playerData = players.get(uuid);
+
+            boolean unused = true;
+
+            for (BoosterType boosterType : playerData.getBooster().keySet()) {
+                PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
+                if (playerBoostData.getTimeLeft() > 0 || playerBoostData.getAmount() > 0) {
+                    unused = false;
+                }
+            }
+
+            if (!unused) {
+                continue;
+            }
+
+            players.remove(uuid);
+            RachamonPixelmonBooster.getInstance().getLogger().debug("remove unused uuid: " + uuid);
+        }
+
+        this.save();
+
+    }
+
+    public void save() {
         try {
             RachamonPixelmonBooster.getInstance().getPlayerDataService().save();
         } catch (Exception e) {
             e.printStackTrace();
             RachamonPixelmonBooster.getInstance().getLogger().error("Something wrong while save player data");
         }
-
     }
 }

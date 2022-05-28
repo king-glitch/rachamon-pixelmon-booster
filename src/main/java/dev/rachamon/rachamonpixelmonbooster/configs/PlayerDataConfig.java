@@ -35,6 +35,12 @@ public class PlayerDataConfig {
         @Setting(value = "is-activate", comment = "is the player activating the boost.")
         protected boolean isActivate = false;
 
+        public PlayerBoostData(int timeLeft, int amount, boolean isActivate) {
+            this.timeLeft = timeLeft;
+            this.amount = amount;
+            this.isActivate = isActivate;
+        }
+
         public int getTimeLeft() {
             return timeLeft;
         }
