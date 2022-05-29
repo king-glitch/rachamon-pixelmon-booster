@@ -71,37 +71,162 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
                 BoosterType boosterType = BoosterType.valueOf(boost);
                 switch (boosterType) {
                     case POKEMON_SPAWN:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonSpawnBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonSpawnBooster());
+                            break;
+                        }
+                        PokemonSpawnBooster pokemonSpawnBooster = (PokemonSpawnBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonSpawnBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonSpawnBooster);
                         break;
                     case BATTLE_WINNING:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new TrainerMoneyBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new TrainerMoneyBooster());
+                            break;
+                        }
+                        TrainerMoneyBooster trainerMoneyBooster = (TrainerMoneyBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        trainerMoneyBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, trainerMoneyBooster);
                         break;
                     case BOSS:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonBossBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonBossBooster());
+                            break;
+                        }
+                        PokemonBossBooster pokemonBossBooster = (PokemonBossBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonBossBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonBossBooster);
                         break;
                     case HATCH:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonHatchBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonHatchBooster());
+                            break;
+                        }
+                        PokemonHatchBooster pokemonHatchBooster = (PokemonHatchBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonHatchBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonHatchBooster);
                         break;
                     case HIDDEN_ABILITY:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonHABooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonHABooster());
+                            break;
+                        }
+                        PokemonHABooster pokemonHABooster = (PokemonHABooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonHABooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonHABooster);
                         break;
                     case EXP:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonExpBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonExpBooster());
+                            break;
+                        }
+                        PokemonExpBooster pokemonExpBooster = (PokemonExpBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonExpBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonExpBooster);
                         break;
                     case EV:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonEVBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonEVBooster());
+                            break;
+                        }
+                        PokemonEVBooster pokemonEVBooster = (PokemonEVBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonEVBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonEVBooster);
                         break;
                     case SHINY_RATE:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonShinyBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonShinyBooster());
+                            break;
+                        }
+                        PokemonShinyBooster pokemonShinyBooster = (PokemonShinyBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonShinyBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonShinyBooster);
                         break;
                     case CAPTURE:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonCaptureBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonCaptureBooster());
+                            break;
+                        }
+                        PokemonCaptureBooster pokemonCaptureBooster = (PokemonCaptureBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonCaptureBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonCaptureBooster);
                         break;
                     case DROP:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonDropBooster());
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonDropBooster());
+                            break;
+                        }
+                        PokemonDropBooster pokemonDropBooster = (PokemonDropBooster) RachamonPixelmonBoosterManager
+                                .getBoosters()
+                                .get(boosterType);
+                        pokemonDropBooster.setConfig(RachamonPixelmonBooster
+                                .getInstance()
+                                .getBooster()
+                                .getBoosters()
+                                .get(boosterType.toString()));
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, pokemonDropBooster);
                         break;
                     default:
-                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new Booster(boosterType));
+                        if (!RachamonPixelmonBoosterManager.getBoosters().containsKey(boosterType)) {
+                            RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new Booster(boosterType));
+                            break;
+                        }
+                        Booster booster = RachamonPixelmonBoosterManager.getBoosters().get(boosterType);
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, booster);
                         break;
                 }
             } catch (Exception e) {

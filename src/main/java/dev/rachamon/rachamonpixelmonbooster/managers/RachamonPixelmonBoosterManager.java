@@ -265,6 +265,18 @@ public class RachamonPixelmonBoosterManager {
         boolean isAdded = this.addPlayerToTaskList(player, boosterType, true);
 
         if (!isAdded) {
+            ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getBoosterAlreadyActivated()
+                    .replaceAll("\\{booster}", boosterType.getName())
+                    .replaceAll("\\{time-left}", BoosterUtil.secondToTime(this.plugin
+                            .getPlayerDataService()
+                            .getPlayerData(player.getUniqueId())
+                            .getBooster()
+                            .get(boosterType)
+                            .getTimeLeft())));
             return;
         }
 
@@ -272,7 +284,7 @@ public class RachamonPixelmonBoosterManager {
                 .getInstance()
                 .getLanguage()
                 .getGeneralLanguage()
-                .getBoosterAlreadyActivated()
+                .getBoosterResumed()
                 .replaceAll("\\{booster}", boosterType.getName())
                 .replaceAll("\\{time-left}", BoosterUtil.secondToTime(this.plugin
                         .getPlayerDataService()
@@ -280,6 +292,8 @@ public class RachamonPixelmonBoosterManager {
                         .getBooster()
                         .get(boosterType)
                         .getTimeLeft())));
+
+
         this.plugin.getPlayerDataService().setPlayerBoostActivate(player.getUniqueId(), boosterType, true);
     }
 
@@ -294,8 +308,6 @@ public class RachamonPixelmonBoosterManager {
 
         if (resume && playerTime != null) {
             return false;
-        } else if (resume) {
-            return true;
         }
 
         if (playerTime == null) {

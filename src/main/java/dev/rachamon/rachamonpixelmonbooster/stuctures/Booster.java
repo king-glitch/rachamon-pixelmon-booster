@@ -204,4 +204,8 @@ public class Booster {
     public BoosterConfig.Booster getConfig() {
         return this.config;
     }
+
+    public void setConfig(BoosterConfig.Booster config) {
+        this.config = config;
+    }
 }

@@ -115,6 +115,11 @@ public class PixelmonSpawnListener {
             return;
         }
 
+        RachamonPixelmonBooster
+                .getInstance()
+                .getLogger()
+                .debug("Spawning HA: " + pokemon.getPokemonData().getDisplayName());
+
         if (pokemon.getBaseStats().getAllAbilities().size() != 3) {
             return;
         }
@@ -122,10 +127,6 @@ public class PixelmonSpawnListener {
         pokemon.getPokemonData().setAbility(pokemon.getBaseStats().getAllAbilities().get(2));
         pokemon.update(EnumUpdateType.Ability);
 
-        RachamonPixelmonBooster
-                .getInstance()
-                .getLogger()
-                .debug("Spawning HA: " + pokemon.getPokemonData().getDisplayName());
 
     }
 
