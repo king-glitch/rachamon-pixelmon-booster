@@ -34,11 +34,11 @@ public class Booster {
         this.booster = boosterType;
         try {
             this.interval = RachamonPixelmonBooster.getInstance().getConfig().getGeneralConfig().getTaskInterval();
-            this.config = (BoosterConfig.Booster) RachamonPixelmonBooster
+            this.config = RachamonPixelmonBooster
                     .getInstance()
                     .getBooster()
                     .getBoosters()
-                    .get(this.getBooster().toString());
+                    .get(boosterType.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,10 +74,15 @@ public class Booster {
             if (playerTime.getTime() > 0) {
                 int timeLeft = playerTime.getTime() - this.interval;
                 playerTime.setTime(Math.max(timeLeft, 0));
-                RachamonPixelmonBooster
-                        .getInstance()
-                        .getPlayerDataService()
-                        .setPlayerBoostTimeData(playerTime.getUuid(), this.getBooster(), playerTime.getTime());
+
+                try {
+                    RachamonPixelmonBooster
+                            .getInstance()
+                            .getPlayerDataService()
+                            .setPlayerBoostTimeData(playerTime.getUuid(), this.getBooster(), playerTime.getTime());
+                } catch (Exception e) {
+                    RachamonPixelmonBooster.getInstance().getLogger().debug(e.getMessage());
+                }
                 return false;
             }
 

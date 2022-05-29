@@ -1,16 +1,11 @@
 package dev.rachamon.rachamonpixelmonbooster.listeners;
 
-import com.google.common.collect.Sets;
 import com.pixelmonmod.pixelmon.api.events.spawning.SpawnEvent;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
 import com.pixelmonmod.pixelmon.api.spawning.AbstractSpawner;
 import com.pixelmonmod.pixelmon.api.spawning.SpawnInfo;
 import com.pixelmonmod.pixelmon.api.spawning.SpawnLocation;
-import com.pixelmonmod.pixelmon.api.spawning.conditions.LocationType;
-import com.pixelmonmod.pixelmon.api.spawning.util.SpatialData;
-import com.pixelmonmod.pixelmon.api.world.MutableLocation;
 import com.pixelmonmod.pixelmon.comm.EnumUpdateType;
-import com.pixelmonmod.pixelmon.config.BetterSpawnerConfig;
 import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.spawning.PixelmonSpawning;
@@ -23,10 +18,10 @@ import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonShinyBoost
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonSpawnBooster;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The type Pixelmon spawn listener.
@@ -53,7 +48,12 @@ public class PixelmonSpawnListener {
                 .getBoosters()
                 .get(BoosterType.POKEMON_SPAWN);
 
-        EntityPlayerMP player = ((PlayerTrackingSpawner) event.spawner).getTrackedPlayer();
+        if (booster == null) {
+            RachamonPixelmonBooster.getInstance().getLogger().debug("no booster in manager.");
+            return;
+        }
+
+        Player player = ((Player) ((PlayerTrackingSpawner) event.spawner).getTrackedPlayer());
 
         if (player == null) {
             return;
@@ -62,7 +62,7 @@ public class PixelmonSpawnListener {
         if (!booster.isGloballyActive() && booster
                 .getPlayers()
                 .stream()
-                .noneMatch(p -> p.getUuid().equals(player.getUniqueID()))) {
+                .noneMatch(p -> p.getUuid().equals(player.getUniqueId()))) {
             return;
         }
 
@@ -75,16 +75,16 @@ public class PixelmonSpawnListener {
             return;
         }
 
-        EntityPixelmon spawn = this.getRandomPokemon(player, booster.getBlacklist(), booster.isAllowLegendary());
-
-        RachamonPixelmonBooster.getInstance().getLogger().debug("spawning random boost.");
+        EntityPixelmon spawn = this.getRandomPokemon(((PlayerTrackingSpawner) event.spawner).getTrackedPlayer(), booster.getBlacklist(), booster.isAllowLegendary());
 
         if (spawn == null) {
-            RachamonPixelmonBooster.getInstance().getLogger().debug("no random spawn boost.");
             return;
         }
 
-        RachamonPixelmonBooster.getInstance().getLogger().debug("attempting spawning random boost: " + spawn);
+        RachamonPixelmonBooster
+                .getInstance()
+                .getLogger()
+                .debug("attempting spawning random boost: " + spawn.getPokemonData().getDisplayName());
 
         this.onSpawnHABoost(player, spawn);
         this.onSpawnShinyBoost(player, spawn);
@@ -96,7 +96,7 @@ public class PixelmonSpawnListener {
      * @param player  the player
      * @param pokemon the pokemon
      */
-    public void onSpawnHABoost(EntityPlayerMP player, EntityPixelmon pokemon) {
+    public void onSpawnHABoost(Player player, EntityPixelmon pokemon) {
 
         PokemonHABooster booster = (PokemonHABooster) RachamonPixelmonBoosterManager
                 .getBoosters()
@@ -105,7 +105,7 @@ public class PixelmonSpawnListener {
         if (!booster.isGloballyActive() && booster
                 .getPlayers()
                 .stream()
-                .noneMatch(p -> p.getUuid().equals(player.getUniqueID()))) {
+                .noneMatch(p -> p.getUuid().equals(player.getUniqueId()))) {
             return;
         }
 
@@ -121,6 +121,12 @@ public class PixelmonSpawnListener {
 
         pokemon.getPokemonData().setAbility(pokemon.getBaseStats().getAllAbilities().get(2));
         pokemon.update(EnumUpdateType.Ability);
+
+        RachamonPixelmonBooster
+                .getInstance()
+                .getLogger()
+                .debug("Spawning HA: " + pokemon.getPokemonData().getDisplayName());
+
     }
 
     /**
@@ -129,7 +135,7 @@ public class PixelmonSpawnListener {
      * @param player  the player
      * @param pokemon the pokemon
      */
-    public void onSpawnShinyBoost(EntityPlayerMP player, EntityPixelmon pokemon) {
+    public void onSpawnShinyBoost(Player player, EntityPixelmon pokemon) {
 
         PokemonShinyBooster booster = (PokemonShinyBooster) RachamonPixelmonBoosterManager
                 .getBoosters()
@@ -138,7 +144,7 @@ public class PixelmonSpawnListener {
         if (!booster.isGloballyActive() && booster
                 .getPlayers()
                 .stream()
-                .noneMatch(p -> p.getUuid().equals(player.getUniqueID()))) {
+                .noneMatch(p -> p.getUuid().equals(player.getUniqueId()))) {
             return;
         }
 
@@ -149,6 +155,23 @@ public class PixelmonSpawnListener {
         }
 
         pokemon.getPokemonData().setShiny(true);
+
+        RachamonPixelmonBooster
+                .getInstance()
+                .getLogger()
+                .debug("Spawning Shiny: " + pokemon.getPokemonData().getDisplayName());
+    }
+
+    private String getRandomPokemon(Map<String, Double> chances) {
+        double chance = new Random().nextDouble() * 100.0;
+        double cumulative = 0.0;
+        for (String pokemon : chances.keySet()) {
+            cumulative += chances.get(pokemon);
+            if (chance < cumulative) {
+                return pokemon;
+            }
+        }
+        return null;
     }
 
     /**
@@ -163,42 +186,57 @@ public class PixelmonSpawnListener {
     public EntityPixelmon getRandomPokemon(EntityPlayerMP player, List<String> blacklist, boolean isAllowLegendary) {
 
         if (!PixelmonSpawning.coordinator.getActive()) {
+            RachamonPixelmonBooster.getInstance().getLogger().debug("not active");
             return null;
         }
 
         AbstractSpawner spawner = PixelmonSpawning.coordinator.getSpawner(player.getName());
+        PlayerTrackingSpawner pSpawner = (PlayerTrackingSpawner) spawner;
 
-        if (spawner == null) {
+        if (pSpawner == null) {
+            RachamonPixelmonBooster.getInstance().getLogger().debug("pSpawner is null;");
             return null;
         }
 
-        SpatialData data = spawner.calculateSpatialData(player.getServerWorld(), player.getPosition(), 6, true, (s) -> true);
-        SpawnLocation spawnLocation = new SpawnLocation(player, new MutableLocation(player.getServerWorld(), player.getPosition()), Sets.newHashSet(new LocationType[]{LocationType.GRASS}), data.baseBlock, data.uniqueSurroundingBlocks, player
-                .getServerWorld()
-                .getBiomeForCoordsBody(player.getPosition()), BetterSpawnerConfig.doesBlockSeeSky(player
-                .getServerWorld()
-                .getBlockState(player.getPosition())), 6, 1);
+        ArrayList<SpawnLocation> spawnLocations = pSpawner.spawnLocationCalculator.calculateSpawnableLocations(spawner.getTrackedBlockCollection(player, 0.0F, 0.0F, pSpawner.horizontalSliceRadius, pSpawner.verticalSliceRadius, 0, 0));
 
-        ArrayList<SpawnInfo> spawns = spawner.getSuitableSpawns(spawnLocation);
         Map<SpawnLocation, List<SpawnInfo>> possibleSpawns = new HashMap<>();
-        possibleSpawns.put(spawnLocation, spawns);
-        Set<String> pokemons = spawner.selectionAlgorithm.getPercentages(spawner, possibleSpawns).keySet();
 
-        List<String> filtered = pokemons.stream().filter(blacklist::contains).collect(Collectors.toList());
+        for (SpawnLocation spawnLocation : spawnLocations) {
+            ArrayList<SpawnInfo> spawns = spawner.getSuitableSpawns(spawnLocation);
+            if (!spawns.isEmpty()) {
+                possibleSpawns.put(spawnLocation, spawns);
+            }
+        }
+
+        Map<String, Double> pokemons = spawner.selectionAlgorithm.getPercentages(spawner, possibleSpawns);
+
+        pokemons.keySet().forEach(p -> {
+            boolean isContain = blacklist.contains(p);
+            if (isContain) {
+                pokemons.remove(p);
+            }
+        });
 
         if (!isAllowLegendary) {
-            filtered = pokemons
-                    .stream()
-                    .filter(p -> Arrays
-                            .stream(EnumSpecies.LEGENDARY_ENUMS)
-                            .noneMatch(s -> s.getPokemonName().equalsIgnoreCase(p)))
-                    .collect(Collectors.toList());
+            pokemons.keySet().forEach(p -> {
+                Arrays
+                        .stream(EnumSpecies.LEGENDARY_ENUMS)
+                        .forEach(s -> {
+                            if (s.getPokemonName().equalsIgnoreCase(p)) {
+                                pokemons.remove(p);
+                            }
+                        });
+
+
+            });
         }
 
-        if (filtered.size() == 0) {
+        if (pokemons.size() == 0) {
             return null;
         }
-        return PokemonSpec.from(filtered.get(new Random().nextInt(filtered.size()))).create(player.getEntityWorld());
+
+        return PokemonSpec.from(this.getRandomPokemon(pokemons)).create(player.getEntityWorld());
     }
 
 }

@@ -59,14 +59,12 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.shadow]
-    classifier ''
 }
 
 reobf {
-    shadowJar {
-
-    }
+    shadowJar {}
 }
+
 processResources {
     filesMatching("mcmod.info") {
         expand(
@@ -75,3 +73,5 @@ processResources {
         )
     }
 }
+
+shadowJar.finalizedBy('reobfShadowJar')

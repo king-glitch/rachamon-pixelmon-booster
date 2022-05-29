@@ -14,6 +14,7 @@ import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.listeners.*;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
+import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.*;
 import org.spongepowered.api.Sponge;
 
 /**
@@ -38,6 +39,7 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
     @Override
     public void postInitialize() {
         this.reload();
+        this.initializeBoosters();
 
         Pixelmon.EVENT_BUS.register(new BattleEndListener());
         Pixelmon.EVENT_BUS.register(new PixelmonDropListener());
@@ -60,6 +62,53 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
     public void reload() {
         this.registerConfigs();
         this.registerCommands();
+    }
+
+    private void initializeBoosters() {
+        for (String boost : RachamonPixelmonBooster.getInstance().getBooster().getBoosters().keySet()) {
+
+            try {
+                BoosterType boosterType = BoosterType.valueOf(boost);
+                switch (boosterType) {
+                    case POKEMON_SPAWN:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonSpawnBooster());
+                        break;
+                    case BATTLE_WINNING:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new TrainerMoneyBooster());
+                        break;
+                    case BOSS:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonBossBooster());
+                        break;
+                    case HATCH:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonHatchBooster());
+                        break;
+                    case HIDDEN_ABILITY:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonHABooster());
+                        break;
+                    case EXP:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonExpBooster());
+                        break;
+                    case EV:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonEVBooster());
+                        break;
+                    case SHINY_RATE:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonShinyBooster());
+                        break;
+                    case CAPTURE:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonCaptureBooster());
+                        break;
+                    case DROP:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new PokemonDropBooster());
+                        break;
+                    default:
+                        RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new Booster(boosterType));
+                        break;
+                }
+            } catch (Exception e) {
+                RachamonPixelmonBooster.getInstance().getLogger().debug("booster type " + boost + " is null");
+            }
+
+        }
     }
 
     private void registerCommands() {
@@ -108,10 +157,7 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
         try {
             this.plugin.getLogger().setDebug(this.plugin.getConfig().getGeneralConfig().isDebug());
             RachamonPixelmonBooster.getInstance().getPlayerDataService().cleanUnusedPlayersData();
-            for (String boost : RachamonPixelmonBooster.getInstance().getBooster().getBoosters().keySet()) {
-                BoosterType boosterType = BoosterType.fromString(boost);
-                RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new Booster(boosterType));
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

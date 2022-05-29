@@ -56,8 +56,12 @@ public class PlayerActionListener {
             }
         }
 
+        if (activatingBoosters.size() == 0) {
+            return;
+        }
+
         player.sendMessage(TextUtil.toText("&aYou have boosts auto activated: " + String.join(", ", activatingBoosters)));
-        player.sendMessage(TextUtil.toText("&To pause use: /boost boost <boost> pause"));
+        player.sendMessage(TextUtil.toText("&eTo pause use: &6&l/boost boost <boost> pause"));
     }
 
     /**

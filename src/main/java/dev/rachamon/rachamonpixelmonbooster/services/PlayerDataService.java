@@ -118,14 +118,17 @@ public class PlayerDataService {
      * @param boosterType the booster type
      * @param amount      the amount
      */
-    public void updatePlayerBoostAmountData(UUID uuid, BoosterType boosterType, int amount) {
+    public void updatePlayerBoostAmountData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
-        playerData
-                .getBooster()
-                .get(boosterType)
-                .setAmount(playerData.getBooster().get(boosterType).getAmount() + amount);
+        PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
 
-        this.updatePlayerBoostData(uuid, boosterType, playerData.getBooster().get(boosterType));
+        if (playerBoostData == null) {
+            playerBoostData = this.addPlayerBoostData(uuid, boosterType);
+        }
+
+        playerBoostData.setAmount(Math.max(playerBoostData.getAmount() + amount, 0));
+
+        this.updatePlayerBoostData(uuid, boosterType, playerBoostData);
         this.save();
     }
 
@@ -136,13 +139,16 @@ public class PlayerDataService {
      * @param boosterType the booster type
      * @param amount      the amount
      */
-    public void updatePlayerBoostTimeData(UUID uuid, BoosterType boosterType, int amount) {
+    public void updatePlayerBoostTimeData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
-        playerData
-                .getBooster()
-                .get(boosterType)
-                .setAmount(playerData.getBooster().get(boosterType).getTimeLeft() + amount);
-        this.updatePlayerBoostData(uuid, boosterType, playerData.getBooster().get(boosterType));
+        PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
+
+        if (playerBoostData == null) {
+            playerBoostData = this.addPlayerBoostData(uuid, boosterType);
+        }
+
+        playerBoostData.setTimeLeft(Math.max(playerBoostData.getTimeLeft() + amount, 0));
+        this.updatePlayerBoostData(uuid, boosterType, playerBoostData);
         this.save();
     }
 
@@ -153,14 +159,17 @@ public class PlayerDataService {
      * @param boosterType the booster type
      * @param amount      the amount
      */
-    public void setPlayerBoostAmountData(UUID uuid, BoosterType boosterType, int amount) {
+    public void setPlayerBoostAmountData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
-        playerData
-                .getBooster()
-                .get(boosterType)
-                .setAmount(amount);
+        PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
 
-        this.updatePlayerBoostData(uuid, boosterType, playerData.getBooster().get(boosterType));
+        if (playerBoostData == null) {
+            playerBoostData = this.addPlayerBoostData(uuid, boosterType);
+        }
+
+        playerBoostData.setAmount(Math.max(amount, 0));
+
+        this.updatePlayerBoostData(uuid, boosterType, playerBoostData);
         this.save();
     }
 
@@ -171,21 +180,24 @@ public class PlayerDataService {
      * @param boosterType the booster type
      * @param amount      the amount
      */
-    public void setPlayerBoostTimeData(UUID uuid, BoosterType boosterType, int amount) {
+    public void setPlayerBoostTimeData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
-        playerData
-                .getBooster()
-                .get(boosterType)
-                .setAmount(amount);
+        PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
 
-        this.updatePlayerBoostData(uuid, boosterType, playerData.getBooster().get(boosterType));
+        if (playerBoostData == null) {
+            playerBoostData = this.addPlayerBoostData(uuid, boosterType);
+        }
+
+        playerBoostData.setTimeLeft(Math.max(amount, 0));
+
+        this.updatePlayerBoostData(uuid, boosterType, playerBoostData);
         this.save();
     }
 
     /**
      * Clean unused players data.
      */
-    public void cleanUnusedPlayersData() {
+    public void cleanUnusedPlayersData() throws Exception {
         Map<UUID, PlayerDataConfig.PlayerData> players = RachamonPixelmonBooster
                 .getInstance()
                 .getPlayerData()
@@ -198,6 +210,11 @@ public class PlayerDataService {
 
             for (BoosterType boosterType : playerData.getBooster().keySet()) {
                 PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
+
+                if (playerBoostData == null) {
+                    playerBoostData = this.addPlayerBoostData(uuid, boosterType);
+                }
+
                 if (playerBoostData.getTimeLeft() > 0 || playerBoostData.getAmount() > 0) {
                     unused = false;
                 }

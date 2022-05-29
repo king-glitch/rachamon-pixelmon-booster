@@ -2,11 +2,12 @@ package dev.rachamon.rachamonpixelmonbooster.managers;
 
 import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
-import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.PlayerTime;
+import dev.rachamon.rachamonpixelmonbooster.utils.BoosterUtil;
+import dev.rachamon.rachamonpixelmonbooster.utils.ChatUtil;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.text.Text;
@@ -57,13 +58,11 @@ public class RachamonPixelmonBoosterManager {
      * @throws Exception the exception
      */
     public BoosterType getBooster(String boost) throws Exception {
-        BoosterType boosterType = BoosterType.fromString(boost);
-
-        if (boosterType == null) {
+        try {
+            return BoosterType.valueOf(boost);
+        } catch (Exception e) {
             throw new Exception("booster not found");
         }
-
-        return boosterType;
     }
 
     /**
@@ -82,6 +81,13 @@ public class RachamonPixelmonBoosterManager {
 
         BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().updatePlayerBoostAmountData(player.getUniqueId(), boosterType, amount);
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getBoosterModificationAdd()
+                .replaceAll("\\{player}", player.getName())
+                .replaceAll("\\{booster}", boosterType.getName()));
     }
 
     /**
@@ -99,6 +105,13 @@ public class RachamonPixelmonBoosterManager {
 
         BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().updatePlayerBoostAmountData(player.getUniqueId(), boosterType, -amount);
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getBoosterModificationRemove()
+                .replaceAll("\\{player}", player.getName())
+                .replaceAll("\\{booster}", boosterType.getName()));
     }
 
     /**
@@ -116,6 +129,13 @@ public class RachamonPixelmonBoosterManager {
 
         BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().setPlayerBoostAmountData(player.getUniqueId(), boosterType, amount);
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getBoosterModificationSet()
+                .replaceAll("\\{player}", player.getName())
+                .replaceAll("\\{booster}", boosterType.getName()));
     }
 
     /**
@@ -133,6 +153,13 @@ public class RachamonPixelmonBoosterManager {
 
         BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().setPlayerBoostTimeData(player.getUniqueId(), boosterType, amount);
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getBoosterModificationSet()
+                .replaceAll("\\{player}", player.getName())
+                .replaceAll("\\{booster}", boosterType.getName()));
     }
 
 
@@ -148,7 +175,20 @@ public class RachamonPixelmonBoosterManager {
         PlayerDataConfig.PlayerData playerData = this.plugin.getPlayerDataService().getPlayerData(player.getUniqueId());
         PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
 
+        if (playerBoostData == null) {
+            playerBoostData = RachamonPixelmonBooster
+                    .getInstance()
+                    .getPlayerDataService()
+                    .addPlayerBoostData(player.getUniqueId(), boosterType);
+        }
+
         if (playerBoostData.getAmount() < 1) {
+            ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getBoosterEmpty()
+                    .replaceAll("\\{booster}", boosterType.getName()));
             return;
         }
 
@@ -156,11 +196,27 @@ public class RachamonPixelmonBoosterManager {
 
         this.plugin
                 .getPlayerDataService()
-                .updatePlayerBoostTimeData(player.getUniqueId(), boosterType, playerBoostData.getTimeLeft() + RachamonPixelmonBooster
+                .updatePlayerBoostTimeData(player.getUniqueId(), boosterType, RachamonPixelmonBooster
                         .getInstance()
                         .getBooster()
                         .getBoosters()
-                        .get(boosterType.toString()).getDuration());
+                        .get(boosterType.toString())
+                        .getDuration());
+
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getBoosterUsed()
+                .replaceAll("\\{booster}", boosterType.getName())
+                .replaceAll("\\{time-left}", BoosterUtil.secondToTime(this.plugin
+                        .getPlayerDataService()
+                        .getPlayerData(player.getUniqueId())
+                        .getBooster()
+                        .get(boosterType)
+                        .getTimeLeft()))
+                .replaceAll("\\{amount}", String.valueOf(playerBoostData.getAmount())));
+
         this.addPlayerToTaskList(player, boosterType);
     }
 
@@ -174,6 +230,7 @@ public class RachamonPixelmonBoosterManager {
     public void playerResumeBooster(Player player, String booster) throws Exception {
         BoosterType boosterType = this.getBooster(booster);
         this.playerResumeBooster(player, boosterType);
+
     }
 
     /**
@@ -188,8 +245,28 @@ public class RachamonPixelmonBoosterManager {
         PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
 
         if (playerBoostData.getTimeLeft() < 1) {
+            ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getBoosterResumedEnded()
+                    .replaceAll("\\{booster}", boosterType.getName()));
             return;
         }
+
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getBoosterResumed()
+                .replaceAll("\\{booster}", boosterType.getName())
+                .replaceAll("\\{time-left}", BoosterUtil.secondToTime(this.plugin
+                        .getPlayerDataService()
+                        .getPlayerData(player.getUniqueId())
+                        .getBooster()
+                        .get(boosterType)
+                        .getTimeLeft()))
+                .replaceAll("\\{amount}", String.valueOf(playerBoostData.getAmount())));
 
         this.addPlayerToTaskList(player, boosterType);
     }
@@ -213,6 +290,7 @@ public class RachamonPixelmonBoosterManager {
                             .getPlayerDataService()
                             .getPlayerBoostData(player.getUniqueId(), boosterType.toString())
                             .getTimeLeft()));
+
             return;
         }
 
@@ -242,7 +320,7 @@ public class RachamonPixelmonBoosterManager {
      * @param player      the player
      * @param boosterType the booster type
      */
-    public void playerPauseBooster(Player player, BoosterType boosterType) {
+    public void playerPauseBooster(Player player, BoosterType boosterType) throws Exception {
         List<PlayerTime> playerTimeList = RachamonPixelmonBoosterManager.getBoosters().get(boosterType).getPlayers();
 
         PlayerTime playerTime = playerTimeList
@@ -252,6 +330,12 @@ public class RachamonPixelmonBoosterManager {
                 .orElse(null);
 
         if (playerTime == null) {
+            ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getBoosterNotActivated()
+                    .replaceAll("\\{booster}", boosterType.getName()));
             return;
         }
 
@@ -261,6 +345,13 @@ public class RachamonPixelmonBoosterManager {
                 .getInstance()
                 .getPlayerDataService()
                 .setPlayerBoostTimeData(player.getUniqueId(), boosterType, playerTime.getTime());
+
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getBoosterPaused()
+                .replaceAll("\\{booster}", boosterType.getName()));
     }
 
     /**
@@ -298,14 +389,14 @@ public class RachamonPixelmonBoosterManager {
 
         PaginationList.Builder builder = PaginationList
                 .builder()
-                .title(TextUtil.toText("&6&lGuilds"))
+                .title(TextUtil.toText("&6&lBoost Info"))
                 .padding(TextUtil.toText("&8="));
 
         List<Text> contents = new ArrayList<>();
         int i = 1;
         for (BoosterType boosterType : playerData.getBooster().keySet()) {
             PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
-            String text = i + ". " + boosterType.toString() + " time-left: " + playerBoostData.getTimeLeft() + ", amount: " + playerBoostData.getAmount() + ", activated: " + this.isPlayerBoostActivated(player.getUniqueId(), boosterType);
+            String text = i + ". " + boosterType.toString() + " time-left: " + BoosterUtil.secondToTime(playerBoostData.getTimeLeft()) + ", amount: " + playerBoostData.getAmount() + ", activated: " + this.isPlayerBoostActivated(player.getUniqueId(), boosterType);
             contents.add(TextUtil.toText(text));
             i++;
         }

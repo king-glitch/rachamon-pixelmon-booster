@@ -30,6 +30,8 @@ public class PlayerDataConfig {
      */
     @ConfigSerializable
     public static class PlayerData {
+
+        public PlayerData() {}
         /**
          * The Booster.
          */
@@ -66,6 +68,8 @@ public class PlayerDataConfig {
          */
         @Setting(value = "is-activate", comment = "is the player activating the boost.")
         protected boolean isActivate = false;
+
+        public PlayerBoostData() {}
 
         /**
          * Instantiates a new Player boost data.
