@@ -66,101 +66,70 @@ public class RachamonPixelmonBoosterManager {
         }
     }
 
-    /**
-     * Add player booster.
-     *
-     * @param player  the player
-     * @param booster the booster
-     * @param amount  the amount
-     * @throws Exception the exception
-     */
-    public void addPlayerBooster(Player player, String booster, int amount) throws Exception {
+    public void addPlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
 
         if (amount <= 0) {
             return;
         }
 
-        BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().updatePlayerBoostAmountData(player.getUniqueId(), boosterType, amount);
         ChatUtil.sendMessage(player, RachamonPixelmonBooster
                 .getInstance()
                 .getLanguage()
                 .getGeneralLanguage()
-                .getBoosterModificationAdd()
-                .replaceAll("\\{player}", player.getName())
+                .getPlayerBoosterModificationAdd()
+                .replaceAll("\\{amount}", String.valueOf(amount))
                 .replaceAll("\\{booster}", boosterType.getName()));
+
     }
 
-    /**
-     * Remove player booster.
-     *
-     * @param player  the player
-     * @param booster the booster
-     * @param amount  the amount
-     * @throws Exception the exception
-     */
-    public void removePlayerBooster(Player player, String booster, int amount) throws Exception {
+    public void removePlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
         if (amount <= 0) {
             return;
         }
 
-        BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().updatePlayerBoostAmountData(player.getUniqueId(), boosterType, -amount);
+
         ChatUtil.sendMessage(player, RachamonPixelmonBooster
                 .getInstance()
                 .getLanguage()
                 .getGeneralLanguage()
-                .getBoosterModificationRemove()
-                .replaceAll("\\{player}", player.getName())
+                .getPlayerBoosterModificationRemove()
+                .replaceAll("\\{amount}", String.valueOf(amount))
                 .replaceAll("\\{booster}", boosterType.getName()));
     }
 
-    /**
-     * Sets amount player booster.
-     *
-     * @param player  the player
-     * @param booster the booster
-     * @param amount  the amount
-     * @throws Exception the exception
-     */
-    public void setAmountPlayerBooster(Player player, String booster, int amount) throws Exception {
+    public void setAmountPlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
         if (amount < 0) {
             return;
         }
 
-        BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().setPlayerBoostAmountData(player.getUniqueId(), boosterType, amount);
+
         ChatUtil.sendMessage(player, RachamonPixelmonBooster
                 .getInstance()
                 .getLanguage()
                 .getGeneralLanguage()
-                .getBoosterModificationSet()
-                .replaceAll("\\{player}", player.getName())
+                .getPlayerBoosterModificationSet()
+                .replaceAll("\\{amount}", String.valueOf(amount))
                 .replaceAll("\\{booster}", boosterType.getName()));
     }
 
-    /**
-     * Sets time player booster.
-     *
-     * @param player  the player
-     * @param booster the booster
-     * @param amount  the amount
-     * @throws Exception the exception
-     */
-    public void setTimePlayerBooster(Player player, String booster, int amount) throws Exception {
+
+    public void setTimePlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
         if (amount < 0) {
             return;
         }
 
-        BoosterType boosterType = this.getBooster(booster);
         this.plugin.getPlayerDataService().setPlayerBoostTimeData(player.getUniqueId(), boosterType, amount);
         ChatUtil.sendMessage(player, RachamonPixelmonBooster
                 .getInstance()
                 .getLanguage()
                 .getGeneralLanguage()
-                .getBoosterModificationSet()
-                .replaceAll("\\{player}", player.getName())
+                .getPlayerBoosterModificationTime()
+                .replaceAll("\\{amount}", String.valueOf(amount))
                 .replaceAll("\\{booster}", boosterType.getName()));
+
     }
 
 

@@ -65,6 +65,18 @@ public class LanguageConfig {
         @Setting(value = "booster-modification-time", comment = "message when player paused the boost.")
         protected String boosterModificationTime = "&7You've set time-left of &a&l{player}&7 at &a&l{booster}&7 booster";
 
+        @Setting(value = "player-booster-modification-add", comment = "message when player paused the boost.")
+        protected String playerBoosterModificationAdd = "&7You've got &a&l{amount}&7x &a&l{booster}&7 booster";
+
+        @Setting(value = "player-booster-modification-remove", comment = "message when player paused the boost.")
+        protected String playerBoosterModificationRemove = "&7Your &a&l{booster}&7 booster been removed &a&l{amount}&7x.";
+
+        @Setting(value = "player-booster-modification-set", comment = "message when player paused the boost.")
+        protected String playerBoosterModificationSet = "&7Your &a&l{booster}&7 booster time has been set to &a&l{amount}&7.";
+
+        @Setting(value = "player-booster-modification-time", comment = "message when player paused the boost.")
+        protected String playerBoosterModificationTime = "&7You've set time-left of &a&l{player}&7 at &a&l{booster}&7 booster";
+
         /**
          * The Booster ended.
          */
@@ -159,6 +171,22 @@ public class LanguageConfig {
 
         public String getGlobalBoosterDeactivateAnnouncement() {
             return globalBoosterDeactivateAnnouncement;
+        }
+
+        public String getPlayerBoosterModificationAdd() {
+            return playerBoosterModificationAdd;
+        }
+
+        public String getPlayerBoosterModificationRemove() {
+            return playerBoosterModificationRemove;
+        }
+
+        public String getPlayerBoosterModificationSet() {
+            return playerBoosterModificationSet;
+        }
+
+        public String getPlayerBoosterModificationTime() {
+            return playerBoosterModificationTime;
         }
     }
 }

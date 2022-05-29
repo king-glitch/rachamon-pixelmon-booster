@@ -5,6 +5,8 @@ import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.commands.elements.BoosterCommandElement;
 import dev.rachamon.rachamonpixelmonbooster.commands.elements.BoosterModificationCommandElement;
+import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
+import dev.rachamon.rachamonpixelmonbooster.utils.ChatUtil;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -38,26 +40,56 @@ public class RachamonPixelmonBoosterModification implements ICommand, IParameter
         }
 
         try {
+            BoosterType boosterType = RachamonPixelmonBooster.getInstance().getBoosterManager().getBooster(boost.get());
             if (action.get().equalsIgnoreCase("add")) {
                 RachamonPixelmonBooster
                         .getInstance()
                         .getBoosterManager()
-                        .addPlayerBooster(player.get(), boost.get(), amount.get());
+                        .addPlayerBooster(player.get(), boosterType, amount.get());
+                ChatUtil.sendMessage(source, RachamonPixelmonBooster
+                        .getInstance()
+                        .getLanguage()
+                        .getGeneralLanguage()
+                        .getBoosterModificationAdd()
+                        .replaceAll("\\{player}", player.get().getName())
+                        .replaceAll("\\{booster}", boosterType.getName()));
             } else if (action.get().equalsIgnoreCase("remove")) {
                 RachamonPixelmonBooster
                         .getInstance()
                         .getBoosterManager()
-                        .removePlayerBooster(player.get(), boost.get(), amount.get());
+                        .removePlayerBooster(player.get(), boosterType, amount.get());
+                ChatUtil.sendMessage(source, RachamonPixelmonBooster
+                        .getInstance()
+                        .getLanguage()
+                        .getGeneralLanguage()
+                        .getBoosterModificationRemove()
+                        .replaceAll("\\{player}", player.get().getName())
+                        .replaceAll("\\{booster}", boosterType.getName()));
             } else if (action.get().equalsIgnoreCase("set")) {
                 RachamonPixelmonBooster
                         .getInstance()
                         .getBoosterManager()
-                        .setAmountPlayerBooster(player.get(), boost.get(), amount.get());
+                        .setAmountPlayerBooster(player.get(), boosterType, amount.get());
+                ChatUtil.sendMessage(source, RachamonPixelmonBooster
+                        .getInstance()
+                        .getLanguage()
+                        .getGeneralLanguage()
+                        .getBoosterModificationSet()
+                        .replaceAll("\\{player}", player.get().getName())
+                        .replaceAll("\\{booster}", boosterType.getName()));
             } else if (action.get().equalsIgnoreCase("time")) {
                 RachamonPixelmonBooster
                         .getInstance()
                         .getBoosterManager()
-                        .setTimePlayerBooster(player.get(), boost.get(), amount.get());
+                        .setTimePlayerBooster(player.get(), boosterType, amount.get());
+                ChatUtil.sendMessage(source, RachamonPixelmonBooster
+                        .getInstance()
+                        .getLanguage()
+                        .getGeneralLanguage()
+                        .getBoosterModificationTime()
+                        .replaceAll("\\{player}", player.get().getName())
+                        .replaceAll("\\{booster}", boosterType.getName()));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
