@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The type Booster.
  */
-public abstract class Booster {
+public class Booster {
     private BoosterType booster = null;
     private final List<PlayerTime> players = new ArrayList<>();
     private boolean isGloballyActive = false;
@@ -34,7 +34,7 @@ public abstract class Booster {
         this.booster = boosterType;
         try {
             this.interval = RachamonPixelmonBooster.getInstance().getConfig().getGeneralConfig().getTaskInterval();
-            this.config = RachamonPixelmonBooster
+            this.config = (BoosterConfig.Booster) RachamonPixelmonBooster
                     .getInstance()
                     .getBooster()
                     .getBoosters()

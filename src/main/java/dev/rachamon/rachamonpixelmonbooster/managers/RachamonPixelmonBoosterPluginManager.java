@@ -12,6 +12,8 @@ import dev.rachamon.rachamonpixelmonbooster.configs.LanguageConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.MainConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.listeners.*;
+import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
+import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 import org.spongepowered.api.Sponge;
 
 /**
@@ -106,6 +108,10 @@ public class RachamonPixelmonBoosterPluginManager implements IRachamonPluginMana
         try {
             this.plugin.getLogger().setDebug(this.plugin.getConfig().getGeneralConfig().isDebug());
             RachamonPixelmonBooster.getInstance().getPlayerDataService().cleanUnusedPlayersData();
+            for (String boost : RachamonPixelmonBooster.getInstance().getBooster().getBoosters().keySet()) {
+                BoosterType boosterType = BoosterType.fromString(boost);
+                RachamonPixelmonBoosterManager.getBoosters().put(boosterType, new Booster(boosterType));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -23,6 +23,6 @@ public class PokemonShinyBooster extends Booster {
      * @return the boolean
      */
     public boolean isChance() {
-        return ((BoosterConfig.ChanceBooster) this.getConfig()).getChance() >= new Random().nextDouble();
+        return (this.getConfig()).getChance() >= new Random().nextDouble();
     }
 }

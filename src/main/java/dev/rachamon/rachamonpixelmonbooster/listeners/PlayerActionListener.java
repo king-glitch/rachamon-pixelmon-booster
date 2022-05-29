@@ -30,6 +30,13 @@ public class PlayerActionListener {
                 .getPlayers()
                 .get(player.getUniqueId());
 
+        if (playerData == null) {
+            playerData = RachamonPixelmonBooster
+                    .getInstance()
+                    .getPlayerDataService()
+                    .addPlayerData(player.getUniqueId());
+        }
+
         List<String> activatingBoosters = new ArrayList<>();
 
         for (BoosterType boosterType : playerData.getBooster().keySet()) {

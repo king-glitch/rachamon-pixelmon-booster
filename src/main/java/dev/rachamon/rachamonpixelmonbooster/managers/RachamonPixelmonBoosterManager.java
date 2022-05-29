@@ -2,6 +2,7 @@ package dev.rachamon.rachamonpixelmonbooster.managers;
 
 import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
+import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
@@ -159,8 +160,7 @@ public class RachamonPixelmonBoosterManager {
                         .getInstance()
                         .getBooster()
                         .getBoosters()
-                        .get(boosterType.toString())
-                        .getDuration());
+                        .get(boosterType.toString()).getDuration());
         this.addPlayerToTaskList(player, boosterType);
     }
 

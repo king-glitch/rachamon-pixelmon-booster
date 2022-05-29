@@ -220,7 +220,7 @@ public class PlayerDataService {
      */
     public void save() {
         try {
-            RachamonPixelmonBooster.getInstance().getPlayerDataService().save();
+            RachamonPixelmonBooster.getInstance().getPlayerDataConfig().save();
         } catch (Exception e) {
             e.printStackTrace();
             RachamonPixelmonBooster.getInstance().getLogger().error("Something wrong while save player data");

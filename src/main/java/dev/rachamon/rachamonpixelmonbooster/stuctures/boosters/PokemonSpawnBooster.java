@@ -1,6 +1,5 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
-import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -24,7 +23,7 @@ public class PokemonSpawnBooster extends Booster {
      * @return the boolean
      */
     public boolean isChance() {
-        return ((BoosterConfig.PokemonBooster) this.getConfig()).getChance() >= new Random().nextDouble();
+        return (this.getConfig()).getChance() >= new Random().nextDouble();
     }
 
     /**
@@ -33,7 +32,7 @@ public class PokemonSpawnBooster extends Booster {
      * @return the blacklist
      */
     public List<String> getBlacklist() {
-        return ((BoosterConfig.PokemonBooster) this.getConfig()).getBlacklist();
+        return (this.getConfig()).getBlacklist();
     }
 
     /**
@@ -42,6 +41,6 @@ public class PokemonSpawnBooster extends Booster {
      * @return the boolean
      */
     public boolean isAllowLegendary() {
-        return ((BoosterConfig.PokemonBooster) this.getConfig()).getAllowLegendary();
+        return this.getConfig().isAllowLegendary();
     }
 }

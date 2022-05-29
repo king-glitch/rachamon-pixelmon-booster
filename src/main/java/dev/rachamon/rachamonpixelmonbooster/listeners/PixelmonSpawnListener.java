@@ -15,6 +15,7 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.spawning.PixelmonSpawning;
 import com.pixelmonmod.pixelmon.spawning.PlayerTrackingSpawner;
+import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonHABooster;
@@ -66,17 +67,24 @@ public class PixelmonSpawnListener {
         }
 
         EntityPixelmon pokemon = (EntityPixelmon) event.action.getOrCreateEntity();
+
         this.onSpawnHABoost(player, pokemon);
         this.onSpawnShinyBoost(player, pokemon);
+
         if (!booster.isChance()) {
             return;
         }
 
         EntityPixelmon spawn = this.getRandomPokemon(player, booster.getBlacklist(), booster.isAllowLegendary());
 
+        RachamonPixelmonBooster.getInstance().getLogger().debug("spawning random boost.");
+
         if (spawn == null) {
+            RachamonPixelmonBooster.getInstance().getLogger().debug("no random spawn boost.");
             return;
         }
+
+        RachamonPixelmonBooster.getInstance().getLogger().debug("attempting spawning random boost: " + spawn);
 
         this.onSpawnHABoost(player, spawn);
         this.onSpawnShinyBoost(player, spawn);

@@ -24,14 +24,16 @@ public class BoosterConfig {
      */
     public Map<String, Booster> initialize() {
         return new HashMap<String, Booster>() {{
-            put(BoosterType.BATTLE_WINNING.toString(), new EvalModifierBooster("{current}*2", 600));
-            put(BoosterType.CAPTURE.toString(), new EvalModifierBooster("{current}+5", 600));
-            put(BoosterType.DROP.toString(), new EvalModifierBooster("{current}+3", 600));
-            put(BoosterType.EXP.toString(), new EvalModifierBooster("{current}*1.5", 600));
-            put(BoosterType.EV.toString(), new EvalModifierBooster("{current}*2", 600));
-            put(BoosterType.HATCH.toString(), new EvalModifierBooster("{current}-50", 600));
-            put(BoosterType.SHINY_RATE.toString(), new ChanceBooster(0.000244140625, 600));
-            put(BoosterType.HIDDEN_ABILITY.toString(), new ChanceBooster(0.000244140625, 600));
+            put(BoosterType.BATTLE_WINNING.toString(), new Booster(600, "{current}*2", 0, new ArrayList<>(), false));
+            put(BoosterType.CAPTURE.toString(), new Booster(600, "{current}+5", 0, new ArrayList<>(), false));
+            put(BoosterType.DROP.toString(), new Booster(600, "{current}+3", 0, new ArrayList<>(), false));
+            put(BoosterType.EXP.toString(), new Booster(600, "{current}*1.5", 0, new ArrayList<>(), false));
+            put(BoosterType.EV.toString(), new Booster(600, "{current}*2", 0, new ArrayList<>(), false));
+            put(BoosterType.HATCH.toString(), new Booster(600, "{current}-50", 0, new ArrayList<>(), false));
+            put(BoosterType.SHINY_RATE.toString(), new Booster(600, "", 0.000244F, new ArrayList<>(), false));
+            put(BoosterType.HIDDEN_ABILITY.toString(), new Booster(600, "", 0.000244F, new ArrayList<>(), false));
+            put(BoosterType.POKEMON_SPAWN.toString(), new Booster(600, "", 0.10F, new ArrayList<>(), false));
+            put(BoosterType.BOSS.toString(), new Booster(600, "", 0.10F, new ArrayList<>(), false));
         }};
     }
 
@@ -49,25 +51,26 @@ public class BoosterConfig {
      */
     @ConfigSerializable
     public static class Booster {
-        /**
-         * The Duration.
-         */
+
         @Setting(value = "duration", comment = "The duration of the booster.")
-        protected int duration;
+        protected int duration = 600;
+        @Setting(value = "modifier-eval", comment = "Modifier Evan as a javascript engine.")
+        protected String modifierEval = "";
+        @Setting(value = "chance", comment = "chance [default: 0.20]")
+        protected float chance;
+        @Setting(value = "blacklist", comment = "blacklist boost pokemon.")
+        protected List<String> blacklist = new ArrayList<>();
+        @Setting(value = "allow-legendary", comment = "allow boost on legendary pokemon.")
+        protected boolean allowLegendary = false;
 
-        /**
-         * Instantiates a new Booster.
-         */
-        public Booster() {
-        }
-
-        /**
-         * Instantiates a new Booster.
-         *
-         * @param duration the duration
-         */
-        public Booster(int duration) {
+        public Booster(){}
+        public Booster(int duration, String modifierEval, float
+                chance, List<String> blacklist, boolean allowLegendary) {
             this.duration = duration;
+            this.modifierEval = modifierEval;
+            this.chance = chance;
+            this.blacklist = blacklist;
+            this.allowLegendary = allowLegendary;
         }
 
 
@@ -79,134 +82,20 @@ public class BoosterConfig {
         public int getDuration() {
             return duration;
         }
-    }
 
-    /**
-     * The type Eval modifier booster.
-     */
-    @ConfigSerializable
-    public static class EvalModifierBooster extends Booster {
-        /**
-         * The Modifier eval.
-         */
-        @Setting(value = "modifier-eval", comment = "Modifier Evan as a javascript engine.")
-        protected String modifierEval;
-
-        /**
-         * Instantiates a new Eval modifier booster.
-         */
-        public EvalModifierBooster() {
-        }
-
-        /**
-         * Instantiates a new Eval modifier booster.
-         *
-         * @param modifierEval the modifier eval
-         * @param duration     the duration
-         */
-        public EvalModifierBooster(String modifierEval, int duration) {
-            super(duration);
-            this.modifierEval = modifierEval;
-        }
-
-        /**
-         * Gets modifier eval.
-         *
-         * @return the modifier eval
-         */
         public String getModifierEval() {
             return modifierEval;
         }
-    }
 
-    /**
-     * The type Chance booster.
-     */
-    @ConfigSerializable
-    public static class ChanceBooster extends Booster {
-        /**
-         * The Chance.
-         */
-        @Setting(value = "chance", comment = "chance [default: 0.20]")
-        protected double chance = 0.20;
-
-        /**
-         * Instantiates a new Chance booster.
-         */
-        public ChanceBooster() {
-        }
-
-        /**
-         * Instantiates a new Chance booster.
-         *
-         * @param chance   the chance
-         * @param duration the duration
-         */
-        public ChanceBooster(double chance, int duration) {
-            super(duration);
-            this.chance = chance;
-        }
-
-        /**
-         * Gets chance.
-         *
-         * @return the chance
-         */
-        public double getChance() {
+        public float getChance() {
             return chance;
         }
-    }
 
-    /**
-     * The type Pokemon booster.
-     */
-    @ConfigSerializable
-    public static class PokemonBooster extends ChanceBooster {
-        /**
-         * The Blacklist.
-         */
-        @Setting(value = "blacklist", comment = "blacklist boost pokemon.")
-        protected List<String> blacklist = new ArrayList<>();
-
-        /**
-         * The Allow legendary.
-         */
-        @Setting(value = "allow-legendary", comment = "allow boost on legendary pokemon.")
-        protected boolean allowLegendary = false;
-
-        /**
-         * Instantiates a new Pokemon booster.
-         */
-        public PokemonBooster() {
-        }
-
-        /**
-         * Instantiates a new Pokemon booster.
-         *
-         * @param chance    the chance
-         * @param duration  the duration
-         * @param blacklist the blacklist
-         */
-        public PokemonBooster(double chance, int duration, List<String> blacklist) {
-            super(chance, duration);
-            this.blacklist = blacklist;
-        }
-
-        /**
-         * Gets blacklist.
-         *
-         * @return the blacklist
-         */
         public List<String> getBlacklist() {
             return blacklist;
         }
 
-        /**
-         * Gets allow legendary.
-         *
-         * @return the allow legendary
-         */
-        public boolean getAllowLegendary() {
+        public boolean isAllowLegendary() {
             return allowLegendary;
         }
     }

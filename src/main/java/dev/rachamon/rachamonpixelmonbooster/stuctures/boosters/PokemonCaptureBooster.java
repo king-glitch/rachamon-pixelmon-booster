@@ -29,7 +29,7 @@ public class PokemonCaptureBooster extends Booster {
     public int calculate(int current) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
-        Object result = engine.eval(((BoosterConfig.EvalModifierBooster) this.getConfig())
+        Object result = engine.eval(( this.getConfig())
                 .getModifierEval()
                 .replaceAll("\\{current}", String.valueOf(current)));
         return Integer.parseInt(result.toString());

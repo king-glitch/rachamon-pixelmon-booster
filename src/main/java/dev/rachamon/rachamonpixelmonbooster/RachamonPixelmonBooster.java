@@ -33,7 +33,7 @@ import java.nio.file.Path;
 /**
  * The type Rachamon pixelmon booster.
  */
-@Plugin(id = "rachamonpixelmonbooster", name = RachamonPixelmonBooster.PLUGIN_NAME, dependencies = {@Dependency(id = "after:pixelmon")})
+@Plugin(id = "rachamonpixelmonbooster", name = RachamonPixelmonBooster.PLUGIN_NAME, dependencies = {@Dependency(id = "pixelmon")})
 public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implements IRachamonPlugin {
 
     /**
@@ -252,6 +252,10 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
      */
     public PlayerDataConfig getPlayerData() {
         return this.playerData.getRoot();
+    }
+
+    public SpongeAPIConfigFactory<RachamonPixelmonBooster, PlayerDataConfig> getPlayerDataConfig() {
+        return this.playerData;
     }
 
     /**
