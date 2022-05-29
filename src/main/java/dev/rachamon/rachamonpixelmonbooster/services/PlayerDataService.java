@@ -132,6 +132,20 @@ public class PlayerDataService {
         this.save();
     }
 
+    public void setPlayerBoostActivate(UUID uuid, BoosterType boosterType, boolean activate) throws Exception {
+        PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
+        PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
+
+        if (playerBoostData == null) {
+            playerBoostData = this.addPlayerBoostData(uuid, boosterType);
+        }
+
+        playerBoostData.setActivate(activate);
+
+        this.updatePlayerBoostData(uuid, boosterType, playerBoostData);
+        this.save();
+    }
+
     /**
      * Update player boost time data.
      *

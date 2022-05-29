@@ -121,6 +121,7 @@ public class Booster {
         }
         this.setRunning(false);
         this.getBoosterTask().cancel();
+        RachamonPixelmonBooster.getInstance().getLogger().debug("Stopping " + this.booster + " booster task");
     }
 
     /**

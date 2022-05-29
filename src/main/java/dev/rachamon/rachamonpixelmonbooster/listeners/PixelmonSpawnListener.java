@@ -44,18 +44,22 @@ public class PixelmonSpawnListener {
             return;
         }
 
+        Player player = ((Player) ((PlayerTrackingSpawner) event.spawner).getTrackedPlayer());
+
+        if (player == null) {
+            return;
+        }
+
+        EntityPixelmon pokemon = (EntityPixelmon) event.action.getOrCreateEntity();
+
+        this.onSpawnHABoost(player, pokemon);
+        this.onSpawnShinyBoost(player, pokemon);
+
         PokemonSpawnBooster booster = (PokemonSpawnBooster) RachamonPixelmonBoosterManager
                 .getBoosters()
                 .get(BoosterType.POKEMON_SPAWN);
 
         if (booster == null) {
-            RachamonPixelmonBooster.getInstance().getLogger().debug("no booster in manager.");
-            return;
-        }
-
-        Player player = ((Player) ((PlayerTrackingSpawner) event.spawner).getTrackedPlayer());
-
-        if (player == null) {
             return;
         }
 
@@ -66,10 +70,6 @@ public class PixelmonSpawnListener {
             return;
         }
 
-        EntityPixelmon pokemon = (EntityPixelmon) event.action.getOrCreateEntity();
-
-        this.onSpawnHABoost(player, pokemon);
-        this.onSpawnShinyBoost(player, pokemon);
 
         if (!booster.isChance()) {
             return;
@@ -220,15 +220,11 @@ public class PixelmonSpawnListener {
 
         if (!isAllowLegendary) {
             pokemons.keySet().forEach(p -> {
-                Arrays
-                        .stream(EnumSpecies.LEGENDARY_ENUMS)
-                        .forEach(s -> {
-                            if (s.getPokemonName().equalsIgnoreCase(p)) {
-                                pokemons.remove(p);
-                            }
-                        });
-
-
+                Arrays.stream(EnumSpecies.LEGENDARY_ENUMS).forEach(s -> {
+                    if (s.getPokemonName().equalsIgnoreCase(p)) {
+                        pokemons.remove(p);
+                    }
+                });
             });
         }
 

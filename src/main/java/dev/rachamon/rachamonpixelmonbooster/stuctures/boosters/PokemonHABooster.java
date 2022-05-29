@@ -23,6 +23,6 @@ public class PokemonHABooster extends Booster {
      * @return the boolean
      */
     public boolean isChance() {
-        return Double.parseDouble((this.getConfig()).getModifierEval()) >= new Random().nextDouble();
+        return this.getConfig().getChance() >= new Random().nextDouble();
     }
 }

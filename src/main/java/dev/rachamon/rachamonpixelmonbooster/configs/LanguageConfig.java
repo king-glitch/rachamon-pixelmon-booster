@@ -41,6 +41,9 @@ public class LanguageConfig {
         @Setting(value = "booster-resumed", comment = "message when player resumed the boost.")
         protected String boosterResumed = "&7You've resumed &a&l{booster}&7 booster. &a&l{time-left}&7 left.";
 
+        @Setting(value = "booster-already-activated", comment = "message when player already activated the boost.")
+        protected String boosterAlreadyActivated = "&7You've already activated &a&l{booster}&7 booster. &a&l{time-left}&7 left.";
+
         @Setting(value = "booster-resumed-ended", comment = "message when player has no time left in boost.")
         protected String boosterResumedEnded = "&7You've no time left in &a&l{booster}&7 booster.";
 
@@ -67,6 +70,18 @@ public class LanguageConfig {
          */
         @Setting(value = "booster-ended", comment = "message when player booster has ended.")
         protected String boosterEnded = "&7Your &c&l{booster}&7 booster has ended.";
+
+        @Setting(value = "global-booster-activate", comment = "message when player activate global booster.")
+        protected String globalBoosterActivate = "&7You have global activated &a&l{booster}&7.";
+
+        @Setting(value = "global-booster-deactivate", comment = "message when player deactivate global booster.")
+        protected String globalBoosterDeactivate = "&7You have global deactivated &c&l{booster}&7.";
+
+        @Setting(value = "global-booster-activate-announcement", comment = "message when global booster has activated.")
+        protected String globalBoosterActivateAnnouncement = "&7The boost &a&l{booster}&7 booster has started globally.";
+
+        @Setting(value = "global-booster-deactivate-announcement", comment = "message when global booster has deactivated.")
+        protected String globalBoosterDeactivateAnnouncement = "&7The boost &a&l{booster}&7 booster has stop globally.";
 
         /**
          * Gets prefix.
@@ -124,6 +139,26 @@ public class LanguageConfig {
 
         public String getBoosterModificationTime() {
             return boosterModificationTime;
+        }
+
+        public String getBoosterAlreadyActivated() {
+            return boosterAlreadyActivated;
+        }
+
+        public String getGlobalBoosterActivate() {
+            return globalBoosterActivate;
+        }
+
+        public String getGlobalBoosterDeactivate() {
+            return globalBoosterDeactivate;
+        }
+
+        public String getGlobalBoosterActivateAnnouncement() {
+            return globalBoosterActivateAnnouncement;
+        }
+
+        public String getGlobalBoosterDeactivateAnnouncement() {
+            return globalBoosterDeactivateAnnouncement;
         }
     }
 }

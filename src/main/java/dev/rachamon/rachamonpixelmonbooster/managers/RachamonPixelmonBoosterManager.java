@@ -8,6 +8,7 @@ import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.PlayerTime;
 import dev.rachamon.rachamonpixelmonbooster.utils.BoosterUtil;
 import dev.rachamon.rachamonpixelmonbooster.utils.ChatUtil;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.text.Text;
@@ -203,6 +204,13 @@ public class RachamonPixelmonBoosterManager {
                         .get(boosterType.toString())
                         .getDuration());
 
+
+        boolean isAdded = this.addPlayerToTaskList(player, boosterType, false);
+
+        if (!isAdded) {
+            return;
+        }
+
         ChatUtil.sendMessage(player, RachamonPixelmonBooster
                 .getInstance()
                 .getLanguage()
@@ -217,7 +225,7 @@ public class RachamonPixelmonBoosterManager {
                         .getTimeLeft()))
                 .replaceAll("\\{amount}", String.valueOf(playerBoostData.getAmount())));
 
-        this.addPlayerToTaskList(player, boosterType);
+        this.plugin.getPlayerDataService().setPlayerBoostActivate(player.getUniqueId(), boosterType, true);
     }
 
     /**
@@ -254,24 +262,28 @@ public class RachamonPixelmonBoosterManager {
             return;
         }
 
+        boolean isAdded = this.addPlayerToTaskList(player, boosterType, true);
+
+        if (!isAdded) {
+            return;
+        }
+
         ChatUtil.sendMessage(player, RachamonPixelmonBooster
                 .getInstance()
                 .getLanguage()
                 .getGeneralLanguage()
-                .getBoosterResumed()
+                .getBoosterAlreadyActivated()
                 .replaceAll("\\{booster}", boosterType.getName())
                 .replaceAll("\\{time-left}", BoosterUtil.secondToTime(this.plugin
                         .getPlayerDataService()
                         .getPlayerData(player.getUniqueId())
                         .getBooster()
                         .get(boosterType)
-                        .getTimeLeft()))
-                .replaceAll("\\{amount}", String.valueOf(playerBoostData.getAmount())));
-
-        this.addPlayerToTaskList(player, boosterType);
+                        .getTimeLeft())));
+        this.plugin.getPlayerDataService().setPlayerBoostActivate(player.getUniqueId(), boosterType, true);
     }
 
-    private void addPlayerToTaskList(Player player, BoosterType boosterType) throws Exception {
+    private boolean addPlayerToTaskList(Player player, BoosterType boosterType, boolean resume) throws Exception {
         List<PlayerTime> playerTimeList = RachamonPixelmonBoosterManager.getBoosters().get(boosterType).getPlayers();
 
         PlayerTime playerTime = playerTimeList
@@ -280,7 +292,14 @@ public class RachamonPixelmonBoosterManager {
                 .findFirst()
                 .orElse(null);
 
+        if (resume && playerTime != null) {
+            return false;
+        } else if (resume) {
+            return true;
+        }
+
         if (playerTime == null) {
+
             RachamonPixelmonBoosterManager
                     .getBoosters()
                     .get(boosterType)
@@ -291,8 +310,10 @@ public class RachamonPixelmonBoosterManager {
                             .getPlayerBoostData(player.getUniqueId(), boosterType.toString())
                             .getTimeLeft()));
 
-            return;
+            RachamonPixelmonBoosterManager.getBoosters().get(boosterType).runTask();
+            return true;
         }
+
 
         playerTime.setTime(this.plugin
                 .getPlayerDataService()
@@ -300,6 +321,8 @@ public class RachamonPixelmonBoosterManager {
                 .getTimeLeft());
 
         RachamonPixelmonBoosterManager.getBoosters().get(boosterType).runTask();
+
+        return true;
     }
 
     /**
@@ -352,30 +375,35 @@ public class RachamonPixelmonBoosterManager {
                 .getGeneralLanguage()
                 .getBoosterPaused()
                 .replaceAll("\\{booster}", boosterType.getName()));
+
+        this.plugin.getPlayerDataService().setPlayerBoostActivate(player.getUniqueId(), boosterType, false);
     }
 
-    /**
-     * Activate global booster.
-     *
-     * @param boost the boost
-     * @throws Exception the exception
-     */
-    public void activateGlobalBooster(String boost) throws Exception {
-        BoosterType boosterType = this.getBooster(boost);
+    public void activateGlobalBooster(BoosterType boosterType) throws Exception {
         Booster booster = this.getBooster(boosterType);
         booster.setGloballyActive(true);
         RachamonPixelmonBoosterManager.getBoosters().get(boosterType).runTask();
+        for (Player player : Sponge.getServer().getOnlinePlayers()) {
+            ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getGlobalBoosterActivateAnnouncement()
+                    .replaceAll("\\{booster}", boosterType.getName()));
+        }
     }
 
-    /**
-     * Deactivate global booster.
-     *
-     * @param boost the boost
-     * @throws Exception the exception
-     */
-    public void deactivateGlobalBooster(String boost) throws Exception {
-        Booster booster = this.getBooster(this.getBooster(boost));
+    public void deactivateGlobalBooster(BoosterType boosterType) throws Exception {
+        Booster booster = this.getBooster(boosterType);
         booster.setGloballyActive(false);
+        for (Player player : Sponge.getServer().getOnlinePlayers()) {
+            ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getGlobalBoosterDeactivateAnnouncement()
+                    .replaceAll("\\{booster}", boosterType.getName()));
+        }
     }
 
     /**

@@ -1,6 +1,5 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
-import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -23,6 +22,6 @@ public class PokemonShinyBooster extends Booster {
      * @return the boolean
      */
     public boolean isChance() {
-        return (this.getConfig()).getChance() >= new Random().nextDouble();
+        return this.getConfig().getChance() >= new Random().nextDouble();
     }
 }
