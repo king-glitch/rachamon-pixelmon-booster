@@ -57,14 +57,16 @@ public class BoosterConfig {
         @Setting(value = "modifier-eval", comment = "Modifier Evan as a javascript engine.")
         protected String modifierEval = "";
         @Setting(value = "chance", comment = "chance [default: 0.20]")
-        protected float chance;
+        protected double chance;
         @Setting(value = "blacklist", comment = "blacklist boost pokemon.")
         protected List<String> blacklist = new ArrayList<>();
         @Setting(value = "allow-legendary", comment = "allow boost on legendary pokemon.")
         protected boolean allowLegendary = false;
 
-        public Booster(){}
-        public Booster(int duration, String modifierEval, float
+        public Booster() {
+        }
+
+        public Booster(int duration, String modifierEval, double
                 chance, List<String> blacklist, boolean allowLegendary) {
             this.duration = duration;
             this.modifierEval = modifierEval;
@@ -87,7 +89,7 @@ public class BoosterConfig {
             return modifierEval;
         }
 
-        public float getChance() {
+        public double getChance() {
             return chance;
         }
 

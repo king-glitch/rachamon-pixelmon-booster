@@ -1,6 +1,8 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
+import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
+import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -29,10 +31,12 @@ public class PokemonCaptureBooster extends Booster {
     public int calculate(int current) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
-        Object result = engine.eval(( this.getConfig())
+        Object result = engine.eval((this.getConfig())
                 .getModifierEval()
                 .replaceAll("\\{current}", String.valueOf(current)));
         return Integer.parseInt(result.toString());
     }
+
+    
 }
 

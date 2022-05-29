@@ -1,6 +1,5 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
-import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -25,4 +24,6 @@ public class PokemonHABooster extends Booster {
     public boolean isChance() {
         return this.getConfig().getChance() >= new Random().nextDouble();
     }
+
+
 }

@@ -43,4 +43,6 @@ public class PokemonSpawnBooster extends Booster {
     public boolean isAllowLegendary() {
         return this.getConfig().isAllowLegendary();
     }
+
+
 }

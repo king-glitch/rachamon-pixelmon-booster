@@ -1,6 +1,5 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
-import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -12,6 +11,7 @@ import javax.script.ScriptException;
  * The type Trainer money booster.
  */
 public class TrainerMoneyBooster extends Booster {
+
     /**
      * Instantiates a new Trainer money booster.
      */
@@ -34,4 +34,6 @@ public class TrainerMoneyBooster extends Booster {
                 .replaceAll("\\{current}", String.valueOf(current)));
         return Integer.parseInt(result.toString());
     }
+
+
 }

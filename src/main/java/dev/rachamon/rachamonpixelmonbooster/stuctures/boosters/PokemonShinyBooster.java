@@ -24,4 +24,6 @@ public class PokemonShinyBooster extends Booster {
     public boolean isChance() {
         return this.getConfig().getChance() >= new Random().nextDouble();
     }
+
+
 }

@@ -1,6 +1,5 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
-import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -15,6 +14,7 @@ public class PokemonBossBooster extends Booster {
     /**
      * Instantiates a new Pokemon boss booster.
      */
+
     public PokemonBossBooster() {
         super(BoosterType.BOSS);
     }
@@ -34,4 +34,5 @@ public class PokemonBossBooster extends Booster {
                 .replaceAll("\\{current}", String.valueOf(current)));
         return Integer.parseInt(result.toString());
     }
+
 }

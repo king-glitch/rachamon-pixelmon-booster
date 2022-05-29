@@ -1,6 +1,5 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures.boosters;
 
-import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.Booster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 
@@ -34,4 +33,6 @@ public class PokemonDropBooster extends Booster {
                 .replaceAll("\\{current}", String.valueOf(current)));
         return Integer.parseInt(result.toString());
     }
+
+
 }

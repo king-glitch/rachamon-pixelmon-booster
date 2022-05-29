@@ -120,11 +120,13 @@ public class PixelmonSpawnListener {
                 .getLogger()
                 .debug("Spawning HA: " + pokemon.getPokemonData().getDisplayName());
 
-        if (pokemon.getBaseStats().getAllAbilities().size() != 3) {
-            return;
-        }
+        pokemon
+                .getPokemonData()
+                .setAbility(pokemon
+                        .getBaseStats()
+                        .getAllAbilities()
+                        .get((pokemon.getBaseStats().getAllAbilities().size() - 1)));
 
-        pokemon.getPokemonData().setAbility(pokemon.getBaseStats().getAllAbilities().get(2));
         pokemon.update(EnumUpdateType.Ability);
 
 

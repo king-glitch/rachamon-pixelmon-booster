@@ -3,6 +3,7 @@ package dev.rachamon.rachamonpixelmonbooster.stuctures;
 import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
+import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
@@ -31,14 +32,14 @@ public class Booster {
      * @param boosterType the booster type
      */
     public Booster(BoosterType boosterType) {
-        this.booster = boosterType;
         try {
+            this.booster = boosterType;
             this.interval = RachamonPixelmonBooster.getInstance().getConfig().getGeneralConfig().getTaskInterval();
-            this.config = RachamonPixelmonBooster
+            this.setConfig(RachamonPixelmonBooster
                     .getInstance()
                     .getBooster()
                     .getBoosters()
-                    .get(boosterType.toString());
+                    .get(boosterType.toString()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -207,5 +208,11 @@ public class Booster {
 
     public void setConfig(BoosterConfig.Booster config) {
         this.config = config;
+    }
+
+    public void reInitializeConfig() {
+        this.setConfig(RachamonPixelmonBooster.getInstance().getBooster().getBoosters().get(this.booster.toString()));
+        RachamonPixelmonBoosterManager.getBoosters().put(this.booster, this);
+
     }
 }
