@@ -206,10 +206,18 @@ public class Booster {
         return this.config;
     }
 
+    /**
+     * Sets config.
+     *
+     * @param config the config
+     */
     public void setConfig(BoosterConfig.Booster config) {
         this.config = config;
     }
 
+    /**
+     * Re initialize config.
+     */
     public void reInitializeConfig() {
         this.setConfig(RachamonPixelmonBooster.getInstance().getBooster().getBoosters().get(this.booster.toString()));
         RachamonPixelmonBoosterManager.getBoosters().put(this.booster, this);

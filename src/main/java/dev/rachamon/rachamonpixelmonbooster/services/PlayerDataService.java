@@ -117,6 +117,7 @@ public class PlayerDataService {
      * @param uuid        the uuid
      * @param boosterType the booster type
      * @param amount      the amount
+     * @throws Exception the exception
      */
     public void updatePlayerBoostAmountData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
@@ -132,6 +133,14 @@ public class PlayerDataService {
         this.save();
     }
 
+    /**
+     * Sets player boost activate.
+     *
+     * @param uuid        the uuid
+     * @param boosterType the booster type
+     * @param activate    the activate
+     * @throws Exception the exception
+     */
     public void setPlayerBoostActivate(UUID uuid, BoosterType boosterType, boolean activate) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
         PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
@@ -152,6 +161,7 @@ public class PlayerDataService {
      * @param uuid        the uuid
      * @param boosterType the booster type
      * @param amount      the amount
+     * @throws Exception the exception
      */
     public void updatePlayerBoostTimeData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
@@ -172,6 +182,7 @@ public class PlayerDataService {
      * @param uuid        the uuid
      * @param boosterType the booster type
      * @param amount      the amount
+     * @throws Exception the exception
      */
     public void setPlayerBoostAmountData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
@@ -193,6 +204,7 @@ public class PlayerDataService {
      * @param uuid        the uuid
      * @param boosterType the booster type
      * @param amount      the amount
+     * @throws Exception the exception
      */
     public void setPlayerBoostTimeData(UUID uuid, BoosterType boosterType, int amount) throws Exception {
         PlayerDataConfig.PlayerData playerData = this.getPlayerData(uuid);
@@ -210,6 +222,8 @@ public class PlayerDataService {
 
     /**
      * Clean unused players data.
+     *
+     * @throws Exception the exception
      */
     public void cleanUnusedPlayersData() throws Exception {
         Map<UUID, PlayerDataConfig.PlayerData> players = RachamonPixelmonBooster

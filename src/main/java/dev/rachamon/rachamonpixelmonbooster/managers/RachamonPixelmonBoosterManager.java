@@ -66,6 +66,14 @@ public class RachamonPixelmonBoosterManager {
         }
     }
 
+    /**
+     * Add player booster.
+     *
+     * @param player      the player
+     * @param boosterType the booster type
+     * @param amount      the amount
+     * @throws Exception the exception
+     */
     public void addPlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
 
         if (amount <= 0) {
@@ -83,6 +91,14 @@ public class RachamonPixelmonBoosterManager {
 
     }
 
+    /**
+     * Remove player booster.
+     *
+     * @param player      the player
+     * @param boosterType the booster type
+     * @param amount      the amount
+     * @throws Exception the exception
+     */
     public void removePlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
         if (amount <= 0) {
             return;
@@ -99,6 +115,14 @@ public class RachamonPixelmonBoosterManager {
                 .replaceAll("\\{booster}", boosterType.getName()));
     }
 
+    /**
+     * Sets amount player booster.
+     *
+     * @param player      the player
+     * @param boosterType the booster type
+     * @param amount      the amount
+     * @throws Exception the exception
+     */
     public void setAmountPlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
         if (amount < 0) {
             return;
@@ -116,6 +140,14 @@ public class RachamonPixelmonBoosterManager {
     }
 
 
+    /**
+     * Sets time player booster.
+     *
+     * @param player      the player
+     * @param boosterType the booster type
+     * @param amount      the amount
+     * @throws Exception the exception
+     */
     public void setTimePlayerBooster(Player player, BoosterType boosterType, int amount) throws Exception {
         if (amount < 0) {
             return;
@@ -323,6 +355,7 @@ public class RachamonPixelmonBoosterManager {
      *
      * @param player      the player
      * @param boosterType the booster type
+     * @throws Exception the exception
      */
     public void playerPauseBooster(Player player, BoosterType boosterType) throws Exception {
         List<PlayerTime> playerTimeList = RachamonPixelmonBoosterManager.getBoosters().get(boosterType).getPlayers();
@@ -360,6 +393,12 @@ public class RachamonPixelmonBoosterManager {
         this.plugin.getPlayerDataService().setPlayerBoostActivate(player.getUniqueId(), boosterType, false);
     }
 
+    /**
+     * Activate global booster.
+     *
+     * @param boosterType the booster type
+     * @throws Exception the exception
+     */
     public void activateGlobalBooster(BoosterType boosterType) throws Exception {
         Booster booster = this.getBooster(boosterType);
         booster.setGloballyActive(true);
@@ -374,6 +413,12 @@ public class RachamonPixelmonBoosterManager {
         }
     }
 
+    /**
+     * Deactivate global booster.
+     *
+     * @param boosterType the booster type
+     * @throws Exception the exception
+     */
     public void deactivateGlobalBooster(BoosterType boosterType) throws Exception {
         Booster booster = this.getBooster(boosterType);
         booster.setGloballyActive(false);

@@ -52,20 +52,47 @@ public class BoosterConfig {
     @ConfigSerializable
     public static class Booster {
 
+        /**
+         * The Duration.
+         */
         @Setting(value = "duration", comment = "The duration of the booster.")
         protected int duration = 600;
+        /**
+         * The Modifier eval.
+         */
         @Setting(value = "modifier-eval", comment = "Modifier Evan as a javascript engine.")
         protected String modifierEval = "";
+        /**
+         * The Chance.
+         */
         @Setting(value = "chance", comment = "chance [default: 0.20]")
         protected double chance;
+        /**
+         * The Blacklist.
+         */
         @Setting(value = "blacklist", comment = "blacklist boost pokemon.")
         protected List<String> blacklist = new ArrayList<>();
+        /**
+         * The Allow legendary.
+         */
         @Setting(value = "allow-legendary", comment = "allow boost on legendary pokemon.")
         protected boolean allowLegendary = false;
 
+        /**
+         * Instantiates a new Booster.
+         */
         public Booster() {
         }
 
+        /**
+         * Instantiates a new Booster.
+         *
+         * @param duration       the duration
+         * @param modifierEval   the modifier eval
+         * @param chance         the chance
+         * @param blacklist      the blacklist
+         * @param allowLegendary the allow legendary
+         */
         public Booster(int duration, String modifierEval, double
                 chance, List<String> blacklist, boolean allowLegendary) {
             this.duration = duration;
@@ -85,18 +112,38 @@ public class BoosterConfig {
             return duration;
         }
 
+        /**
+         * Gets modifier eval.
+         *
+         * @return the modifier eval
+         */
         public String getModifierEval() {
             return modifierEval;
         }
 
+        /**
+         * Gets chance.
+         *
+         * @return the chance
+         */
         public double getChance() {
             return chance;
         }
 
+        /**
+         * Gets blacklist.
+         *
+         * @return the blacklist
+         */
         public List<String> getBlacklist() {
             return blacklist;
         }
 
+        /**
+         * Is allow legendary boolean.
+         *
+         * @return the boolean
+         */
         public boolean isAllowLegendary() {
             return allowLegendary;
         }

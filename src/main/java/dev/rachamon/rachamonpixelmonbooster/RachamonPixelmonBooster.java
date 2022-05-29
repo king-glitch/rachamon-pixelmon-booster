@@ -254,6 +254,11 @@ public class RachamonPixelmonBooster extends RachamonSpongePluginProvider implem
         return this.playerData.getRoot();
     }
 
+    /**
+     * Gets player data config.
+     *
+     * @return the player data config
+     */
     public SpongeAPIConfigFactory<RachamonPixelmonBooster, PlayerDataConfig> getPlayerDataConfig() {
         return this.playerData;
     }

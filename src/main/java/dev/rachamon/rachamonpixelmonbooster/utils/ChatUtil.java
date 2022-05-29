@@ -9,6 +9,12 @@ import org.spongepowered.api.entity.living.player.Player;
  * The type Rachamon pixelmon booster util.
  */
 public class ChatUtil {
+    /**
+     * Send message.
+     *
+     * @param player  the player
+     * @param message the message
+     */
     public static void sendMessage(Player player, String message) {
         player.sendMessage(TextUtil.toText(RachamonPixelmonBooster
                 .getInstance()
@@ -17,6 +23,12 @@ public class ChatUtil {
                 .getPrefix() + message));
     }
 
+    /**
+     * Send message.
+     *
+     * @param source  the source
+     * @param message the message
+     */
     public static void sendMessage(CommandSource source, String message) {
         source.sendMessage(TextUtil.toText(RachamonPixelmonBooster
                 .getInstance()

@@ -1,7 +1,16 @@
 package dev.rachamon.rachamonpixelmonbooster.utils;
 
+/**
+ * The type Booster util.
+ */
 public class BoosterUtil {
 
+    /**
+     * Second to time string.
+     *
+     * @param second the second
+     * @return the string
+     */
     public static String secondToTime(int second) {
         int hours = second / 3600;
         int minutes = (second % 3600) / 60;
