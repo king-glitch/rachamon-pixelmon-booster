@@ -26,6 +26,11 @@ public class PokemonEVBooster extends Booster {
      * @throws ScriptException the script exception
      */
     public int calculate(int current) throws ScriptException {
+
+        if (current == 0) {
+            return 0;
+        }
+
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
         Object result = engine.eval((this.getConfig())

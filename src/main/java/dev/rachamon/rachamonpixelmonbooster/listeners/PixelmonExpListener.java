@@ -33,7 +33,7 @@ public class PixelmonExpListener {
         }
 
         try {
-            event.setExperience(booster.calculate(event.getExperience()));
+            event.setExperience((int) booster.calculate(event.getExperience()));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -26,12 +26,12 @@ public class PokemonExpBooster extends Booster {
      * @return the int
      * @throws ScriptException the script exception
      */
-    public int calculate(int current) throws ScriptException {
+    public double calculate(int current) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
         Object result = engine.eval((this.getConfig())
                 .getModifierEval()
                 .replaceAll("\\{current}", String.valueOf(current)));
-        return Integer.parseInt(result.toString());
+        return Double.parseDouble(result.toString());
     }
 }

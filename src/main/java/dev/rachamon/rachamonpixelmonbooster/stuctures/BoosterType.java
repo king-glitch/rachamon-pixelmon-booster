@@ -29,10 +29,6 @@ public enum BoosterType {
      */
     CAPTURE("capture"),
     /**
-     * Legendary booster type.
-     */
-    LEGENDARY("legendary"),
-    /**
      * Shiny rate booster type.
      */
     SHINY_RATE("shiny"),

@@ -7,12 +7,14 @@ import com.pixelmonmod.pixelmon.api.spawning.SpawnInfo;
 import com.pixelmonmod.pixelmon.api.spawning.SpawnLocation;
 import com.pixelmonmod.pixelmon.comm.EnumUpdateType;
 import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
+import com.pixelmonmod.pixelmon.enums.EnumBossMode;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.spawning.PixelmonSpawning;
 import com.pixelmonmod.pixelmon.spawning.PlayerTrackingSpawner;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
+import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonBossBooster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonHABooster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonShinyBooster;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonSpawnBooster;
@@ -54,7 +56,8 @@ public class PixelmonSpawnListener {
 
         this.onSpawnHABoost(player, pokemon);
         this.onSpawnShinyBoost(player, pokemon);
-
+        this.onSpawnBossBoost(player, pokemon);
+        
         PokemonSpawnBooster booster = (PokemonSpawnBooster) RachamonPixelmonBoosterManager
                 .getBoosters()
                 .get(BoosterType.POKEMON_SPAWN);
@@ -88,6 +91,7 @@ public class PixelmonSpawnListener {
 
         this.onSpawnHABoost(player, spawn);
         this.onSpawnShinyBoost(player, spawn);
+        this.onSpawnBossBoost(player, spawn);
     }
 
     /**
@@ -130,6 +134,39 @@ public class PixelmonSpawnListener {
         pokemon.update(EnumUpdateType.Ability);
 
 
+    }
+
+    /**
+     * On spawn ha boost.
+     *
+     * @param player  the player
+     * @param pokemon the pokemon
+     */
+    public void onSpawnBossBoost(Player player, EntityPixelmon pokemon) {
+
+        PokemonBossBooster booster = (PokemonBossBooster) RachamonPixelmonBoosterManager
+                .getBoosters()
+                .get(BoosterType.BOSS);
+
+        if (!booster.isGloballyActive() && booster
+                .getPlayers()
+                .stream()
+                .noneMatch(p -> p.getUuid().equals(player.getUniqueId()))) {
+            return;
+        }
+
+        boolean isChance = booster.isChance();
+
+        if (!isChance) {
+            return;
+        }
+
+        RachamonPixelmonBooster
+                .getInstance()
+                .getLogger()
+                .debug("Spawning Boss: " + pokemon.getPokemonData().getDisplayName());
+
+        pokemon.setBoss(EnumBossMode.getRandomMode());
     }
 
     /**

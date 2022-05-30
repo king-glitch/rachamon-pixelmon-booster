@@ -1,6 +1,7 @@
 package dev.rachamon.rachamonpixelmonbooster.listeners;
 
 import com.pixelmonmod.pixelmon.api.events.CaptureEvent;
+import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.boosters.PokemonCaptureBooster;
@@ -29,7 +30,9 @@ public class PokemonCaptureListener {
         }
 
         try {
+            RachamonPixelmonBooster.getInstance().getLogger().debug("catch rate: " + event.getCatchRate());
             event.setCatchRate(booster.calculate(event.getCatchRate()));
+            RachamonPixelmonBooster.getInstance().getLogger().debug("new catch rate: " + event.getCatchRate());
         } catch (Exception e) {
             e.printStackTrace();
         }
