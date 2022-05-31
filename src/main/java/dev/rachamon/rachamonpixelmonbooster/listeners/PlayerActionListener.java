@@ -1,9 +1,9 @@
 package dev.rachamon.rachamonpixelmonbooster.listeners;
 
-import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.configs.PlayerDataConfig;
 import dev.rachamon.rachamonpixelmonbooster.stuctures.BoosterType;
+import dev.rachamon.rachamonpixelmonbooster.utils.ChatUtil;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
@@ -60,8 +60,12 @@ public class PlayerActionListener {
             return;
         }
 
-        player.sendMessage(TextUtil.toText("&aYou have boosts auto activated: " + String.join(", ", activatingBoosters)));
-        player.sendMessage(TextUtil.toText("&eTo pause use: &6&l/boost boost <boost> pause"));
+        ChatUtil.sendMessage(player, RachamonPixelmonBooster
+                .getInstance()
+                .getLanguage()
+                .getGeneralLanguage()
+                .getPlayerJoined()
+                .replaceAll("\\{boosts}", String.join(", ", activatingBoosters)));
     }
 
     /**

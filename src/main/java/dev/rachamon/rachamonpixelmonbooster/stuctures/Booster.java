@@ -1,9 +1,9 @@
 package dev.rachamon.rachamonpixelmonbooster.stuctures;
 
-import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonpixelmonbooster.RachamonPixelmonBooster;
 import dev.rachamon.rachamonpixelmonbooster.configs.BoosterConfig;
 import dev.rachamon.rachamonpixelmonbooster.managers.RachamonPixelmonBoosterManager;
+import dev.rachamon.rachamonpixelmonbooster.utils.ChatUtil;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
@@ -93,14 +93,12 @@ public class Booster {
                 return true;
             }
 
-            player
-                    .get()
-                    .sendMessage(TextUtil.toText(RachamonPixelmonBooster
-                            .getInstance()
-                            .getLanguage()
-                            .getGeneralLanguage()
-                            .getBoosterEnded()
-                            .replaceAll("\\{booster}", booster.toString())));
+            ChatUtil.sendMessage(player.get(), RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getBoosterEnded()
+                    .replaceAll("\\{booster}", booster.toString()));
 
             return true;
 

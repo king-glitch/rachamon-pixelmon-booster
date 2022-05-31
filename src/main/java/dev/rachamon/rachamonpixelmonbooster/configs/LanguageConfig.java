@@ -152,6 +152,9 @@ public class LanguageConfig {
         @Setting(value = "global-booster-deactivate-announcement", comment = "message when global booster has deactivated.")
         protected String globalBoosterDeactivateAnnouncement = "&7The boost &a&l{booster}&7 booster has stop globally.";
 
+        @Setting(value = "player-joined", comment = "message when player joined the server.")
+        protected String playerJoined = "&7You have boosts auto activated: &a{boosts}.&7\n&7To pause use: &6&l/boost boost <boost> pause";
+
         /**
          * Gets prefix.
          *
@@ -339,6 +342,10 @@ public class LanguageConfig {
          */
         public String getPlayerBoosterModificationTime() {
             return playerBoosterModificationTime;
+        }
+
+        public String getPlayerJoined() {
+            return playerJoined;
         }
     }
 }
