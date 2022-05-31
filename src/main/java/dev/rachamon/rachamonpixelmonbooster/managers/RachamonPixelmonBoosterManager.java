@@ -450,7 +450,24 @@ public class RachamonPixelmonBoosterManager {
         int i = 1;
         for (BoosterType boosterType : playerData.getBooster().keySet()) {
             PlayerDataConfig.PlayerBoostData playerBoostData = playerData.getBooster().get(boosterType);
-            String text = i + ". " + boosterType.toString() + " time-left: " + BoosterUtil.secondToTime(playerBoostData.getTimeLeft()) + ", amount: " + playerBoostData.getAmount() + ", activated: " + this.isPlayerBoostActivated(player.getUniqueId(), boosterType);
+            String text = RachamonPixelmonBooster
+                    .getInstance()
+                    .getLanguage()
+                    .getGeneralLanguage()
+                    .getPrintInfoTemplate()
+                    .replaceAll("\\{index}", String.valueOf(i))
+                    .replaceAll("\\{booster}", boosterType.getName())
+                    .replaceAll("\\{time}", BoosterUtil.secondToTime(playerBoostData.getTimeLeft()))
+                    .replaceAll("\\{amount}", String.valueOf(playerBoostData.getAmount()))
+                    .replaceAll("\\{activated}", this.isPlayerBoostActivated(player.getUniqueId(), boosterType) ? RachamonPixelmonBooster
+                            .getInstance()
+                            .getLanguage()
+                            .getGeneralLanguage()
+                            .getStatusOn() : RachamonPixelmonBooster
+                            .getInstance()
+                            .getLanguage()
+                            .getGeneralLanguage()
+                            .getStatusOff());
             contents.add(TextUtil.toText(text));
             i++;
         }

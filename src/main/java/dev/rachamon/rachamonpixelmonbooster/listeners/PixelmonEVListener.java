@@ -51,15 +51,13 @@ public class PixelmonEVListener {
             int specialDef = booster.calculate(evStore.getStat(StatsType.SpecialDefence));
             int speed = booster.calculate(evStore.getStat(StatsType.Speed));
 
-            RachamonPixelmonBooster
-                    .getInstance()
-                    .getLogger()
-                    .debug(hp + "," + attack + ", " + defense + ", " + specialAtk + ", " + specialDef + ", " + speed);
+            pokemon.getStats().evs.setStat(StatsType.HP, pokemon.getStat(StatsType.HP) + hp);
+            pokemon.getStats().evs.setStat(StatsType.Attack, pokemon.getStat(StatsType.Attack) + attack);
+            pokemon.getStats().evs.setStat(StatsType.Defence, pokemon.getStat(StatsType.Defence) + defense);
+            pokemon.getStats().evs.setStat(StatsType.SpecialAttack, pokemon.getStat(StatsType.SpecialAttack) + specialAtk);
+            pokemon.getStats().evs.setStat(StatsType.SpecialDefence, pokemon.getStat(StatsType.SpecialDefence) + specialDef);
+            pokemon.getStats().evs.setStat(StatsType.Speed, pokemon.getStat(StatsType.Speed) + speed);
 
-            int[] evs = new int[]{hp, attack, defense, specialAtk, specialDef, speed};
-
-//            pokemon.getStats().evs.gainEV(new EVStore(evs));
-//
             event.evStore.fillFromArray(pokemon.getStats().evs.getArray());
 
         } catch (Exception e) {

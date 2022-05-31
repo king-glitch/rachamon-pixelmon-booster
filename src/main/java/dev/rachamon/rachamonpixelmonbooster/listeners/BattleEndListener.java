@@ -19,7 +19,6 @@ public class BattleEndListener {
      */
     @SubscribeEvent
     public void onPlayerBeatTrainer(BeatTrainerEvent event) {
-
         Player player = (Player) event.player;
         TrainerMoneyBooster booster = (TrainerMoneyBooster) RachamonPixelmonBoosterManager
                 .getBoosters()
