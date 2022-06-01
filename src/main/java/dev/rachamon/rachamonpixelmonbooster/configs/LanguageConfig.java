@@ -152,15 +152,27 @@ public class LanguageConfig {
         @Setting(value = "global-booster-deactivate-announcement", comment = "message when global booster has deactivated.")
         protected String globalBoosterDeactivateAnnouncement = "&7The boost &a&l{booster}&7 booster has stop globally.";
 
+        /**
+         * The Player joined.
+         */
         @Setting(value = "player-joined", comment = "message when player joined the server.")
         protected String playerJoined = "&7You have boosts auto activated: &a{boosts}.&7\n&7To pause use: &6&l/boost boost <boost> pause";
 
+        /**
+         * The Print info template.
+         */
         @Setting(value = "print-info-template", comment = "info command template")
         protected String printInfoTemplate = "&c&l{index}&8.&7 &c&l{booster}&7 Amount&7: &c&l{amount}&7, &7Time&7: &c&l{time}&7, &7Activate: &a&l{activated}&7";
 
+        /**
+         * The Status on.
+         */
         @Setting(value = "status-on", comment = "Status on")
         protected String statusOn = "&a&lOn";
 
+        /**
+         * The Status off.
+         */
         @Setting(value = "status-off", comment = "Status off")
         protected String statusOff = "&4&lOff";
 
@@ -353,18 +365,38 @@ public class LanguageConfig {
             return playerBoosterModificationTime;
         }
 
+        /**
+         * Gets player joined.
+         *
+         * @return the player joined
+         */
         public String getPlayerJoined() {
             return playerJoined;
         }
 
+        /**
+         * Gets print info template.
+         *
+         * @return the print info template
+         */
         public String getPrintInfoTemplate() {
             return printInfoTemplate;
         }
 
+        /**
+         * Gets status on.
+         *
+         * @return the status on
+         */
         public String getStatusOn() {
             return statusOn;
         }
 
+        /**
+         * Gets status off.
+         *
+         * @return the status off
+         */
         public String getStatusOff() {
             return statusOff;
         }
